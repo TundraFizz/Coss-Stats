@@ -11,14 +11,18 @@
     "ejs": "latest",
     "node-sass-middleware": "latest",
     "formidable": "latest",
-    "mysql": "latest"
+    "mysql": "latest",
+    "concurrently": "latest",
+    "nodemon": "latest"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "develop": "concurrently --kill-others \"nodemon server.js\" \"npm run build-css\"",
+    "build-css": "node-sass static/css/sass/theme.scss static/css/theme.css --output-style compressed -w static/css/sass/theme.scss"
   },
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/TundraFizz/NodeJS-Template.git"
+    "url": "https://github.com/TundraFizz/Coss-Stats"
   }
 }
