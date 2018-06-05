@@ -52,17 +52,17 @@ app.post("/upload-fee-split", function(req, res){
         var results     = /"(.*)","(.*)","(.*)","(.*)"/.exec(line);
         try{
           var token       = results[1];
-          var total       = results[2];
-          var transferred = results[3];
-          var remaining   = results[4];
+          var total       = parseFloat(results[2]).toFixed(8);
+          var transferred = (results[3] == "") ? "" : parseFloat(results[3]).toFixed(8);
+          var remaining   = parseFloat(results[4]).toFixed(8);
 
           obj[token] = {
             "total"              : total,
             "transferred"        : transferred,
             "remaining"          : remaining,
-            "valueUsdTotal"      : 0,
-            "valueUsdTransferred": 0,
-            "valueUsdRemaining"  : 0
+            "valueUsdTotal"      : "",
+            "valueUsdTransferred": "",
+            "valueUsdRemaining"  : ""
           };
         }catch(err){
           res.status(200).json({"error":errorMessage});
@@ -74,13 +74,32 @@ app.post("/upload-fee-split", function(req, res){
       var args = [];
 
       db.query(sql, args, function(err, rows){
+        // Go through every recorded crypto in my database
         for(r in rows){
           var symbol = rows[r]["symbol_coss"];
           var value  = rows[r]["value"];
 
-          obj[symbol]["valueUsdTotal"]       = value * obj[symbol]["total"];
-          obj[symbol]["valueUsdTransferred"] = value * obj[symbol]["transferred"];
-          obj[symbol]["valueUsdRemaining"]   = value * obj[symbol]["remaining"];
+          if(value === null){
+            // A null value means that the value currently isn't recorded on CMC
+            // Because we don't know the value, set the total and remaining to zero
+            obj[symbol]["valueUsdTotal"]     = "0.00000000";
+            obj[symbol]["valueUsdRemaining"] = "0.00000000";
+
+            // If we've done any transfers, set it to zero as well
+            if(obj[symbol]["transferred"])
+              obj[symbol]["valueUsdTransferred"] = "0.00000000";
+          }else{
+            // The value is recorded on CMC
+            // Multiply the total, transferred, and remaining amounts by the value
+            // Fix the number to eight decimal places
+            obj[symbol]["valueUsdTotal"]       = parseFloat(value * obj[symbol]["total"]).toFixed(8);
+            obj[symbol]["valueUsdTransferred"] = parseFloat(value * obj[symbol]["transferred"]).toFixed(8);
+            obj[symbol]["valueUsdRemaining"]   = parseFloat(value * obj[symbol]["remaining"]).toFixed(8);
+
+            // Any value that is nothing gets set to an empty string
+            if(obj[symbol]["valueUsdTransferred"] == "0.00000000")
+              obj[symbol]["valueUsdTransferred"] = "";
+          }
         }
 
         res.status(200).json(obj);
