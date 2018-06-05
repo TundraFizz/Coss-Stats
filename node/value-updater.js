@@ -39,14 +39,6 @@ function UpdateCrypto(){
       var data  = obj["data"];
       var tests = 0;
 
-      // TODO: Fix this bug
-      // LALA updated
-      // ADI updated
-      // BCH updated
-      // BLZ updated <--- Updates twice, which skips BNT
-      // BLZ updated <--- Updates twice, which skips BNT
-      // BPL updated
-
       for(d in data){
         var cmcName   = data[d]["name"];
         var cmcSymbol = data[d]["symbol"];
@@ -59,14 +51,14 @@ function UpdateCrypto(){
             var args = [value, id];
 
             db.query(sql, args, function(err, rows){
-              Log(`${symbolCmc} updated`);
+              // Log(`${symbolCmc} updated`);
               index++;
               lock = false;
               return;
             });
           });
         }else if(++tests == data.length){
-          Log(`${symbolCmc} doesn't exist in CMC`);
+          // Log(`${symbolCmc} doesn't exist in CMC`);
           index++;
           lock = false;
           return;
