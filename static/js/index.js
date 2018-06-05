@@ -60,7 +60,9 @@ $(document).ready(function(){
                 <td>${res[token]["total"]}</td>
                 <td>${res[token]["transferred"]}</td>
                 <td>${res[token]["remaining"]}</td>
-                <td>${res[token]["valueUsdRemaining"]}</td>
+                <td class="val-total">      ${res[token]["valueUsdTotal"]}</td>
+                <td class="val-transferred">${res[token]["valueUsdTransferred"]}</td>
+                <td class="val-remaining">  ${res[token]["valueUsdRemaining"]}</td>
               </tr>
               `;
             }
@@ -75,3 +77,21 @@ $(document).ready(function(){
     }
   });
 });
+
+function ShowTotal(){
+  $(".val-total").css("display", "block");
+  $(".val-transferred").css("display", "none");
+  $(".val-remaining").css("display", "none");
+}
+
+function ShowTransferred(){
+  $(".val-total").css("display", "none");
+  $(".val-transferred").css("display", "block");
+  $(".val-remaining").css("display", "none");
+}
+
+function ShowRemaining(){
+  $(".val-total").css("display", "none");
+  $(".val-transferred").css("display", "none");
+  $(".val-remaining").css("display", "block");
+}
