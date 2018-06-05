@@ -1,5 +1,8 @@
 var request = require("request");
 var mysql   = require("mysql");
+var fs      = require("fs");
+
+function Log(msg){fs.appendFile("log.txt", msg + "\n", function(err){if(err) return console.log(err);}); }
 
 var db = mysql.createConnection({
     host    : "127.0.0.1",
@@ -20,7 +23,7 @@ function UpdateCrypto(){
 
   db.query(sql, args, function(err, rows){
     if(rows.length == 0){
-      console.log("No entries exist, trying again in five seconds");
+      Log("No entries exist, trying again in five seconds");
       lock = false;
       return;
     }else if(index == rows.length){
@@ -48,8 +51,7 @@ function UpdateCrypto(){
         var cmcName   = data[d]["name"];
         var cmcSymbol = data[d]["symbol"];
 
-        // if(cmcName == name && cmcSymbol == symbolCmc){
-        if(cmcSymbol == symbolCmc){
+        if(cmcName == name && cmcSymbol == symbolCmc){
           request(`https://api.coinmarketcap.com/v2/ticker/${data[d]["id"]}/?convert=USD`, {"json":"true"}, function(error, res, obj){
             var value = obj["data"]["quotes"]["USD"]["price"];
 
@@ -57,14 +59,14 @@ function UpdateCrypto(){
             var args = [value, id];
 
             db.query(sql, args, function(err, rows){
-              console.log(`${symbolCmc} updated`);
+              Log(`${symbolCmc} updated`);
               index++;
               lock = false;
               return;
             });
           });
         }else if(++tests == data.length){
-          console.log(`${symbolCmc} doesn't exist in CMC`);
+          Log(`${symbolCmc} doesn't exist in CMC`);
           index++;
           lock = false;
           return;
