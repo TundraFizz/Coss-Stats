@@ -6,4 +6,6 @@
 ---
 ### **1. Installing and Running**
 
-To install the project, run `npm i` and then `npm run develop` for development mode, or `npm run` for production mode.
+To install the project, run `npm i`
+
+To run the project, use `npm run develop` for development mode, or `npm run` for production mode
