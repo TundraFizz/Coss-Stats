@@ -42,18 +42,16 @@ $(document).ready(function(){
           if("error" in res){
             console.log(res["error"]);
           }else{
-            console.log(res);
-
-            $(".reeee").html("");
+            // Default values for variables
             var html                = "";
             var grandUsdTotal       = 0;
             var grandUsdTransferred = 0;
             var grandUsdRemaining   = 0;
 
             for(token in res){
-              grandUsdTotal       += res[token]["valueUsdTotal"];
-              grandUsdTransferred += res[token]["valueUsdTransferred"];
-              grandUsdRemaining   += res[token]["valueUsdRemaining"];
+              grandUsdTotal       += parseFloat(res[token]["valueUsdTotal"]);
+              grandUsdTransferred += (res[token]["valueUsdTransferred"] == "") ? 0 : parseFloat(res[token]["valueUsdTransferred"]);
+              grandUsdRemaining   += parseFloat(res[token]["valueUsdRemaining"]);
               html                += `
               <tr>
                 <td>${token}</td>
@@ -67,7 +65,11 @@ $(document).ready(function(){
               `;
             }
 
-            $(".reeee").html(html);
+            grandUsdTotal       = grandUsdTotal.toFixed(2);
+            grandUsdTransferred = grandUsdTransferred.toFixed(2);
+            grandUsdRemaining   = grandUsdRemaining.toFixed(2);
+
+            $(".fsa-stats tbody").html(html);
             $(".total").html(grandUsdTotal);
             $(".transferred").html(grandUsdTransferred);
             $(".remaining").html(grandUsdRemaining);
@@ -82,16 +84,19 @@ function ShowTotal(){
   $(".val-total").css("display", "block");
   $(".val-transferred").css("display", "none");
   $(".val-remaining").css("display", "none");
+  $($(".fsa-stats table thead tr th:last-child")[0]).text("Value (Total)");
 }
 
 function ShowTransferred(){
   $(".val-total").css("display", "none");
   $(".val-transferred").css("display", "block");
   $(".val-remaining").css("display", "none");
+  $($(".fsa-stats table thead tr th:last-child")[0]).text("Value (Transferred)");
 }
 
 function ShowRemaining(){
   $(".val-total").css("display", "none");
   $(".val-transferred").css("display", "none");
   $(".val-remaining").css("display", "block");
+  $($(".fsa-stats table thead tr th:last-child")[0]).text("Value (Remaining)");
 }
