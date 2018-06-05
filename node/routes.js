@@ -70,7 +70,7 @@ app.post("/upload-fee-split", function(req, res){
         }
       }
 
-      var sql  = "SELECT symbol_coss, value FROM value WHERE symbol_coss IN ('CRED-VERIFY','ETH')";
+      var sql  = "SELECT symbol_coss, value FROM value";
       var args = [];
 
       db.query(sql, args, function(err, rows){
