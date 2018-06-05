@@ -58,9 +58,9 @@ $(document).ready(function(){
                 <td>${res[token]["total"]}</td>
                 <td>${res[token]["transferred"]}</td>
                 <td>${res[token]["remaining"]}</td>
-                <td class="val-total">      ${res[token]["valueUsdTotal"]}</td>
-                <td class="val-transferred">${res[token]["valueUsdTransferred"]}</td>
-                <td class="val-remaining">  ${res[token]["valueUsdRemaining"]}</td>
+                <td class="val-total"       style="display: none;">${res[token]["valueUsdTotal"]}</td>
+                <td class="val-transferred" style="display: none;">${res[token]["valueUsdTransferred"]}</td>
+                <td class="val-remaining"   style="display: block;">${res[token]["valueUsdRemaining"]}</td>
               </tr>
               `;
             }
