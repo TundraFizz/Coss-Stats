@@ -13,7 +13,7 @@
 body {
   display:          block;
   margin:           0;
-  background-color: #ccc;
+  background-color: white;
 }
 
 .dropzone {
@@ -37,7 +37,22 @@ body {
   margin: 4px 6px;
 }
 
-.fsa-stats table {border-collapse: collapse;}
+.fsa-stats table {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+.fsa-stats thead tr {
+  background-color: #ff9098;
+}
+
+.fsa-stats tbody tr:nth-child(2n+1) {
+  background-color: #36c6dc;
+}
+
+.fsa-stats tbody tr:nth-child(2n) {
+  background-color: #d3d3d3;
+}
 
 .fsa-stats thead th:nth-child(1) {width: 120px;}
 .fsa-stats thead th:nth-child(2) {width: 100px;}
@@ -45,11 +60,16 @@ body {
 .fsa-stats thead th:nth-child(4) {width: 100px;}
 .fsa-stats thead th:nth-child(5) {width: 160px;}
 
+.fsa-stats tbody td                {padding: 1px 4px;}
 .fsa-stats tbody td:nth-child(1)   {width: 120px; height: 20px;}
-.fsa-stats tbody td:nth-child(2)   {width: 100px; height: 20px;}
-.fsa-stats tbody td:nth-child(3)   {width: 100px; height: 20px;}
-.fsa-stats tbody td:nth-child(4)   {width: 100px; height: 20px;}
-.fsa-stats tbody td:nth-child(n+5) {width: 160px; height: 20px;}
+.fsa-stats tbody td:nth-child(2)   {width: 100px; height: 20px; text-align: center;}
+.fsa-stats tbody td:nth-child(3)   {width: 100px; height: 20px; text-align: center;}
+.fsa-stats tbody td:nth-child(4)   {width: 100px; height: 20px; text-align: center;}
+.fsa-stats tbody td:nth-child(n+5) {width: 160px; height: 20px; text-align: center;}
+
+.container {
+  width: 100%;
+}
 
 .container-outer {
   display:     table;
