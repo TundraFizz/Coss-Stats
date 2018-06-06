@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>NodeJS Example</title>
+    <title>COSS Stats</title>
     <meta charset="utf-8">
-    <meta name="description"  content="This is the index">
+    <meta name="description"  content="COSS Statistics">
     <meta name="author"       content="Tundra Fizz">
     <link rel="shortcut icon" href="/img/icon.jpg">
     <link rel="stylesheet"    href="/css/theme.css">
@@ -12,54 +12,46 @@
   </head>
 
   <body>
-    <div class="dropzone">Drop file here</div>
-
-    <div class="totals">
-      <table>
-        <thead></thead>
-        <tbody>
-          <tr>
-            <td>Total</td>
-            <td class="total"></td>
-          </tr>
-          <tr>
-            <td>Transferred</td>
-            <td class="transferred"></td>
-          </tr>
-          <tr>
-            <td>Remaining</td>
-            <td class="remaining"></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="container">
+      <div class="delete">DELETE</div>
     </div>
 
-    <div class="table">
-      <table border="1">
-        <thead></thead>
-        <tbody>
-          <tr>
-            <td style="cursor: pointer;" onclick="ShowTotal()">Total</td>
-            <td style="cursor: pointer;" onclick="ShowTransferred()">Transferred</td>
-            <td style="cursor: pointer;" onclick="ShowRemaining()">Remaining</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="container">
+      <div class="totals">
+        <table>
+          <thead></thead>
+          <tbody>
+            <tr>
+              <td>FSA Value</td>
+              <td class="fsa-value">$0.00</td>
+            </tr>
+            <tr>
+              <td>Net Value</td>
+              <td class="net-value">$0.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <div class="fsa-stats">
-      <table>
-        <thead>
-          <tr>
-            <th>Token</th>
-            <th>Total</th>
-            <th>Transfered</th>
-            <th>Remaining</th>
-            <th>Value (Remaining)</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <div class="container">
+      <div class="fsa-stats">
+        <table>
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>Remaining</th>
+              <th>FSA Value</th>
+              <th>Fee</th>
+              <th>Net Value</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="dropzone">
+        <div>Drag and drop your Total_Fee_Split_Allocation.csv here</div>
+      </div>
     </div>
   </body>
 </html>
