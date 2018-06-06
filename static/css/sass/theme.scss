@@ -13,28 +13,33 @@
 body {
   display:          block;
   margin:           0;
-  background-color: white;
+  font-family: droid-sans;
+  background-image: url(../img/noise.png);
 }
 
-.dropzone {
-  border: 2px dashed #ccc;
-  width: 300px;
-  height: 200px;
-  float: right;
-}
-
-/*.dropzone {
+.container {
   width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-}*/
+}
 
-.totals,
-.table,
+.container > * {
+  display: table;
+  margin: 0 auto;
+}
+
+.container-outer {
+  display:     table;
+  width:       100%;
+  height:      80%;
+  font-family: days-sans;
+}
+
+.container-inner {
+  display:        table-cell;
+  vertical-align: middle;
+  text-align:     center;
+}
+
 .fsa-stats {
-  margin: 4px 6px;
 }
 
 .fsa-stats table {
@@ -67,26 +72,11 @@ body {
 .fsa-stats tbody td:nth-child(4)   {width: 100px; height: 20px; text-align: center;}
 .fsa-stats tbody td:nth-child(n+5) {width: 160px; height: 20px; text-align: center;}
 
-.container {
-  width: 100%;
-}
 
-.container-outer {
-  display:     table;
-  width:       100%;
-  height:      80%;
-  font-family: days-sans;
-}
-
-.container-inner {
-  display:        table-cell;
-  vertical-align: middle;
-  text-align:     center;
-}
-
-.content {
-  margin:      6px 12px;
-  font-family: droid-sans;
+.dropzone {
+  border: 2px dashed #ccc;
+  width: 300px;
+  height: 200px;
 }
 
 .error-404 {
