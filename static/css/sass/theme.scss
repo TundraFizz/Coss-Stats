@@ -11,14 +11,15 @@
 
 /* Everything */
 body {
-  display:          block;
-  margin:           0;
+  display: block;
+  margin: 0;
   font-family: droid-sans;
   background-image: url(../img/noise.png);
 }
 
 .container {
   width: 100%;
+  margin: 10px 8px;
 }
 
 .container > * {
@@ -26,23 +27,18 @@ body {
   margin: 0 auto;
 }
 
-.container-outer {
-  display:     table;
-  width:       100%;
-  height:      80%;
-  font-family: days-sans;
-}
-
-.container-inner {
-  display:        table-cell;
-  vertical-align: middle;
-  text-align:     center;
+.totals {
+  border-collapse: collapse;
+  border: 1px solid black;
 }
 
 .fsa-stats {
 }
 
 .fsa-stats table {
+  display: block;
+  height: 400px;
+  overflow-y: scroll;
   border-collapse: collapse;
   border: 1px solid black;
 }
@@ -72,18 +68,46 @@ body {
 .fsa-stats tbody td:nth-child(4)   {width: 100px; height: 20px; text-align: center;}
 .fsa-stats tbody td:nth-child(n+5) {width: 160px; height: 20px; text-align: center;}
 
+.delete {
+  margin: 10px auto;
+  padding: 2px 4px;
+  border: 1px solid black;
+  border-radius: 6px;
+  background-color: #d3d3d3;
+  cursor: pointer;
+
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+
+  &:hover {
+    background-color: #36c6dc;
+  }
+
+  &:active {
+    background-color: #ff9098;
+  }
+}
 
 .dropzone {
-  border: 2px dashed #ccc;
+  border: 1.5px dashed black;
   width: 300px;
   height: 200px;
+
+  div {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
 }
 
 .error-404 {
-  display:          block;
-  width:            100vw;
-  height:           100vh;
-  margin:           0;
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
   background-color: #ccc;
 }
 
