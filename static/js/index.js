@@ -1,5 +1,41 @@
+function LoadTable(fsa){
+  var fsaValue = 0;
+  var netValue = 0;
+  var html     = "";
+
+  for(token in fsa){
+    var fV    = parseFloat(fsa[token]["fsaValue"]);
+    var nV    = parseFloat(fsa[token]["netValue"]);
+    fsaValue += (isNaN(fV)) ? 0 : fV;
+    netValue += (isNaN(nV)) ? 0 : nV;
+    html     += `
+    <tr>
+      <td>${token}</td>
+      <td>${fsa[token]["remaining"]}</td>
+      <td>${fsa[token]["fsaValue"]}</td>
+      <td>${fsa[token]["fee"]}</td>
+      <td>${fsa[token]["netValue"]}</td>
+    </tr>
+    `;
+  }
+
+  $(".fsa-value").html("$" + fsaValue.toFixed(2));
+  $(".net-value").html("$" + netValue.toFixed(2));
+  $(".fsa-stats tbody").html(html);
+  $(".fsa-stats").show();
+  $(".dropzone").hide();
+}
+
 $(document).ready(function(){
-  var filename = "";
+  if(localStorage.getItem("fsa") !== null){
+    var fsa = JSON.parse(localStorage.getItem("fsa"));
+    LoadTable(fsa);
+  }else{
+    $(".fsa-stats").hide();
+    $(".dropzone").show();
+  }
+
+  var filename   = "";
   var image_data = "";
 
   $.event.props.push("dataTransfer");
@@ -38,65 +74,27 @@ $(document).ready(function(){
         "data": data,
         "processData": false,
         "contentType": false,
-        success: function(res){
-          if("error" in res){
-            console.log(res["error"]);
+        success: function(fsa){
+          if("error" in fsa){
+            console.log(fsa["error"]);
           }else{
-            // Default values for variables
-            var html                = "";
-            var grandUsdTotal       = 0;
-            var grandUsdTransferred = 0;
-            var grandUsdRemaining   = 0;
+            // Save the result into localStorag
+            localStorage.setItem("fsa", JSON.stringify(fsa));
 
-            for(token in res){
-              grandUsdTotal       += parseFloat(res[token]["valueUsdTotal"]);
-              grandUsdTransferred += (res[token]["valueUsdTransferred"] == "") ? 0 : parseFloat(res[token]["valueUsdTransferred"]);
-              grandUsdRemaining   += parseFloat(res[token]["valueUsdRemaining"]);
-              html                += `
-              <tr>
-                <td>${token}</td>
-                <td>${res[token]["total"]}</td>
-                <td>${res[token]["transferred"]}</td>
-                <td>${res[token]["remaining"]}</td>
-                <td class="val-total"       style="display: none;">${res[token]["valueUsdTotal"]}</td>
-                <td class="val-transferred" style="display: none;">${res[token]["valueUsdTransferred"]}</td>
-                <td class="val-remaining"   style="display: block;">${res[token]["valueUsdRemaining"]}</td>
-              </tr>
-              `;
-            }
-
-            grandUsdTotal       = grandUsdTotal.toFixed(2);
-            grandUsdTransferred = grandUsdTransferred.toFixed(2);
-            grandUsdRemaining   = grandUsdRemaining.toFixed(2);
-
-            $(".fsa-stats tbody").html(html);
-            $(".total").html(grandUsdTotal);
-            $(".transferred").html(grandUsdTransferred);
-            $(".remaining").html(grandUsdRemaining);
+            LoadTable(fsa);
           }
         }
       });
     }
   });
+
+  $(".delete").click(DeleteFsaData);
 });
 
-function ShowTotal(){
-  $(".val-total").css("display", "block");
-  $(".val-transferred").css("display", "none");
-  $(".val-remaining").css("display", "none");
-  $($(".fsa-stats table thead tr th:last-child")[0]).text("Value (Total)");
-}
-
-function ShowTransferred(){
-  $(".val-total").css("display", "none");
-  $(".val-transferred").css("display", "block");
-  $(".val-remaining").css("display", "none");
-  $($(".fsa-stats table thead tr th:last-child")[0]).text("Value (Transferred)");
-}
-
-function ShowRemaining(){
-  $(".val-total").css("display", "none");
-  $(".val-transferred").css("display", "none");
-  $(".val-remaining").css("display", "block");
-  $($(".fsa-stats table thead tr th:last-child")[0]).text("Value (Remaining)");
+function DeleteFsaData(){
+  localStorage.removeItem("fsa");
+  $(".fsa-stats").hide();
+  $(".dropzone").show();
+  $(".fsa-value").html("$0.00");
+  $(".net-value").html("$0.00");
 }
