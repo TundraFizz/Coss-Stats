@@ -23,6 +23,7 @@ function LoadTable(fsa){
   $(".net-value").html("$" + netValue.toFixed(2));
   $(".fsa-stats tbody").html(html);
   $(".fsa-stats").show();
+  $(".delete").show();
   $(".dropzone").hide();
 }
 
@@ -32,6 +33,7 @@ $(document).ready(function(){
     LoadTable(fsa);
   }else{
     $(".fsa-stats").hide();
+    $(".delete").hide();
     $(".dropzone").show();
   }
 
@@ -42,23 +44,20 @@ $(document).ready(function(){
 
   $(".dropzone").on({
     dragenter: function(e){
-      e.stopPropagation();
-      e.preventDefault();
-      $(this).css("background-color", "lightBlue");
+      Stop(e);
+      $(this).css("background-color", "#bbd9ff");
     },
     dragover: function(e){
-      e.stopPropagation();
-      e.preventDefault();
-      $(this).css("background-color", "lightBlue");
+      Stop(e);
+      $(this).css("background-color", "#bbd9ff");
     },
     dragleave: function(e){
-      e.stopPropagation();
-      e.preventDefault();
+      Stop(e);
       $(this).css("background-color", "");
     },
     drop: function(e){
-      e.stopPropagation();
-      e.preventDefault();
+      Stop(e);
+      $(this).css("background-color", "");
 
       var file = e.dataTransfer.files[0];
       var fileReader = new FileReader();
@@ -78,9 +77,8 @@ $(document).ready(function(){
           if("error" in fsa){
             console.log(fsa["error"]);
           }else{
-            // Save the result into localStorag
+            // Save the result into localStorage and load the table
             localStorage.setItem("fsa", JSON.stringify(fsa));
-
             LoadTable(fsa);
           }
         }
@@ -94,7 +92,13 @@ $(document).ready(function(){
 function DeleteFsaData(){
   localStorage.removeItem("fsa");
   $(".fsa-stats").hide();
+  $(".delete").hide();
   $(".dropzone").show();
   $(".fsa-value").html("$0.00");
   $(".net-value").html("$0.00");
+}
+
+function Stop(e){
+  e.stopPropagation();
+  e.preventDefault();
 }
