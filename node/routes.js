@@ -49,20 +49,16 @@ app.post("/upload-fee-split", function(req, res){
         //   2. Total amount you've received
         //   3. Amount you've transferred to your wallet
         //   4. Remaining amount you can transfer
-        var results     = /"(.*)","(.*)","(.*)","(.*)"/.exec(line);
+        var results = /"(.*)","(.*)","(.*)","(.*)"/.exec(line);
         try{
-          var token       = results[1];
-          var total       = parseFloat(results[2]).toFixed(8);
-          var transferred = (results[3] == "") ? "" : parseFloat(results[3]).toFixed(8);
-          var remaining   = parseFloat(results[4]).toFixed(8);
+          var token     = results[1];
+          var remaining = parseFloat(results[4]).toFixed(8);
 
           obj[token] = {
-            "total"              : total,
-            "transferred"        : transferred,
-            "remaining"          : remaining,
-            "valueUsdTotal"      : "",
-            "valueUsdTransferred": "",
-            "valueUsdRemaining"  : ""
+            "remaining"  : remaining,
+            "fsaValue"   : 0,
+            "fee"        : 0,
+            "netValue"   : 0,
           };
         }catch(err){
           res.status(200).json({"error":errorMessage});
@@ -70,41 +66,65 @@ app.post("/upload-fee-split", function(req, res){
         }
       }
 
-      var sql  = "SELECT symbol_coss, value FROM value";
-      var args = [];
+      // I need to get the current value of Ethereum in order to calculate the 0.001 ETH fee
+      var sql = "SELECT value FROM value WHERE name='Ethereum'";
+      db.query(sql, function(err, rows){
+        var ethFee = rows[0]["value"] * 0.001;
+        ethFee = ethFee.toFixed(2);
 
-      db.query(sql, args, function(err, rows){
-        // Go through every recorded crypto in my database
-        for(r in rows){
-          var symbol = rows[r]["symbol_coss"];
-          var value  = rows[r]["value"];
+        var sql  = "SELECT symbol_coss, value, fee FROM value";
+        var args = [];
 
-          if(value === null){
-            // A null value means that the value currently isn't recorded on CMC
-            // Because we don't know the value, set the total and remaining to zero
-            obj[symbol]["valueUsdTotal"]     = "0.00000000";
-            obj[symbol]["valueUsdRemaining"] = "0.00000000";
+        db.query(sql, args, function(err, rows){
+          // Go through every recorded crypto in my database
+          for(r in rows){
+            var symbol = rows[r]["symbol_coss"];
+            var value  = rows[r]["value"];
+            var fee    = rows[r]["fee"];
 
-            // If we've done any transfers, set it to zero as well
-            if(obj[symbol]["transferred"])
-              obj[symbol]["valueUsdTransferred"] = "0.00000000";
-          }else{
-            // The value is recorded on CMC
-            // Multiply the total, transferred, and remaining amounts by the value
-            // Fix the number to eight decimal places
-            obj[symbol]["valueUsdTotal"]       = parseFloat(value * obj[symbol]["total"]).toFixed(8);
-            obj[symbol]["valueUsdTransferred"] = parseFloat(value * obj[symbol]["transferred"]).toFixed(8);
-            obj[symbol]["valueUsdRemaining"]   = parseFloat(value * obj[symbol]["remaining"]).toFixed(8);
+            if(value === null){
+              // A null value means that the value currently isn't recorded on CMC
+              // Because I don't know how much it's worth, set value to zero
+              obj[symbol]["fsaValue"] = "0.00";
+              obj[symbol]["fsaValue"] = "???";
+            }else{
+              // The value is recorded on CMC
+              // Multiply the remaining amount by the value and fix the number to eight decimal places
+              // This will round to the nearest cent (>= 5 up; <5 down)
+              obj[symbol]["fsaValue"] = parseFloat(value * obj[symbol]["remaining"]).toFixed(2);
+            }
 
-            // Any value that is nothing gets set to an empty string
-            if(obj[symbol]["valueUsdTransferred"] == "0.00000000")
-              obj[symbol]["valueUsdTransferred"] = "";
+            // Fee structure:
+            //   0: No fee, you can distribute it into the appropiate wallet
+            //   1: A fee of 0.001 ETH to convert it into ETH
+            //   ETH: NO fee, but you need at least 0.01 ETH to distribute it into your ETH wallet
+            //   DISABLED: Unkown at this time because it's disabled
+            if(fee == "0"){
+              obj[symbol]["fee"] = 0;
+            }else if(fee == "1"){
+              obj[symbol]["fee"] = ethFee;
+            }else if(fee == "ETH"){
+              obj[symbol]["fee"] = 0;
+            }else if(fee == "DISABLED"){
+              obj[symbol]["fee"] = "DISABLED";
+            }
+
+            obj[symbol]["netValue"] = obj[symbol]["fsaValue"] - obj[symbol]["fee"];
+            obj[symbol]["netValue"] = obj[symbol]["netValue"].toFixed(2);
+
+            if(obj[symbol]["netValue"] < 0)
+              obj[symbol]["netValue"] = 0;
+
+            if(obj[symbol]["fee"] == "DISABLED")
+              obj[symbol]["netValue"] = "Can't distribute"
+            else if(obj[symbol]["fsaValue"] == "???")
+              obj[symbol]["netValue"] = "Unkown";
           }
-        }
 
-        res.status(200).json(obj);
-        fs.unlink(path, function(err){});
-        return;
+          res.status(200).json(obj);
+          fs.unlink(path, function(err){});
+          return;
+        });
       });
     });
   });
