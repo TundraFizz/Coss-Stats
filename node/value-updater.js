@@ -1,4 +1,6 @@
 var request = require("request");
+var cheerio = require("cheerio");
+var moment  = require("moment");
 var mysql   = require("mysql");
 var fs      = require("fs");
 
@@ -10,6 +12,10 @@ var db = mysql.createConnection({
     password: "",
     database: "coss"
 });
+
+//////////////////////////
+// Crypto Value Updater //
+//////////////////////////
 
 var index = 0;
 var lock  = false;
@@ -71,3 +77,35 @@ function UpdateCrypto(){
 // Rate Limit: No more than 30/minute
 // Safe Limit: Once every five seconds
 var timerId = setInterval(UpdateCrypto, 5000);
+
+////////////////////
+// Volume Updater //
+////////////////////
+
+setInterval(()=>{
+  // Check if I'm on the hour (minute == 0)
+  if(moment().minute() == 0){
+    var url = "https://coinmarketcap.com/exchanges/coss/";
+
+    request(url, function(err, res, html){
+      if(err) return;
+
+      var now   = moment();
+      var year  = now.year();
+      var month = now.month() + 1;
+      var day   = now.date();
+      var hour  = now.hour();
+      var date  = `${year}-${month}-${day} ${hour}:00:00`;
+
+      var $ = cheerio.load(html);
+      var volume = $($("[data-currency-volume]")[0]).attr("data-usd");
+      volume = Math.floor(volume);
+
+      var sql  = "INSERT INTO volume (date, volume) VALUES (?, ?)";
+      var args = [date, volume];
+      db.query(sql, args, function(err, rows){
+        return;
+      });
+    });
+  }
+}, 30000); // Run this function every 30 seconds
