@@ -13,11 +13,51 @@
 
   <body>
     <div class="container">
-      <div>TODO: 24 hour exchange volume history</div>
+      <div class="volume-history">
+        <table border="1">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Hour</th>
+              <th>Volume</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < volumeHistory.length; i++){ %>
+              <tr>
+                <td><%= volumeHistory[i]["date"]   %></td>
+                <td><%= volumeHistory[i]["hour"]   %></td>
+                <td><%= volumeHistory[i]["volume"] %></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="container">
-      <div>TODO: Weekly FSA reward history</div>
+      <div class="weekly-rewards">
+        <table border="1">
+          <thead>
+            <tr>
+              <th>ETH Block</th>
+              <th>Date</th>
+              <th>Volume</th>
+              <th>USD per COSS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i = 0; i < weeklyRewards.length; i++){ %>
+              <tr>
+                <td><%= weeklyRewards[i]["ethBlock"] %></td>
+                <td><%= weeklyRewards[i]["date"]     %></td>
+                <td><%= weeklyRewards[i]["volume"]   %></td>
+                <td><%= weeklyRewards[i]["value"]    %></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="container">
