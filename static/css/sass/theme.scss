@@ -27,6 +27,13 @@ body {
   margin: 0 auto;
 }
 
+.aaa {
+  display: block;
+  width: 100px;
+  height: 100px;
+  background: url(../img/external-link.svg) no-repeat center center fixed;
+}
+
 .totals {
   border-collapse: collapse;
   border: 1px solid black;
