@@ -11,6 +11,8 @@
     "node-sass-middleware": "latest",
     "body-parser": "latest",
     "formidable": "latest",
+    "moment": "latest",
+    "cheerio": "latest",
     "mysql": "latest",
     "nodemon": "latest",
     "concurrently": "latest"
