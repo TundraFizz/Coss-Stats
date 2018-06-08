@@ -1,6 +1,7 @@
 var app        = require("../server.js");
 var fs         = require("fs");
 var mysql      = require("mysql");
+var moment     = require("moment");
 var formidable = require("formidable");
 
 var db = mysql.createConnection({
@@ -10,8 +11,65 @@ var db = mysql.createConnection({
     database: "coss"
 });
 
+function GetVolumeHistory(){return new Promise((done) => {
+  var sql  = "SELECT date, volume FROM volume ORDER BY id DESC";
+  var args = [];
+  var volumeHistory = [];
+
+  db.query(sql, args, function(err, rows){
+    for(r in rows){
+      var date = "";
+      var hour = moment(rows[r]["date"]).format("HH");
+
+      if(hour == 0 || r == 0)
+        date = moment(rows[r]["date"]).format("MMMM DD, YYYY");
+
+      volumeHistory.push({
+        "date"  : date,
+        "hour"  : hour,
+        "volume": rows[r]["volume"]
+      });
+    }
+
+    done(volumeHistory);
+  });
+})}
+
+function GetWeeklyRewards(){return new Promise((done) => {
+  var sql  = "SELECT eth_block, date, volume, value FROM weekly_rewards";
+  var args = [];
+  var weeklyRewards = [];
+
+  db.query(sql, args, function(err, rows){
+    for(r in rows){
+      date = moment(rows[r]["date"]).format("MMMM DD, YYYY @ HH:mm:ss");
+
+      weeklyRewards.push({
+        "ethBlock": rows[r]["eth_block"],
+        "date"    : date,
+        "volume"  : rows[r]["volume"],
+        "value"   : rows[r]["value"]
+      });
+    }
+
+    done(weeklyRewards);
+  });
+})}
+
 app.get("/", function(req, res){
-  res.render("index.ejs");
+  var qwe = {};
+
+  GetVolumeHistory()
+  .then((r) => {
+    qwe["volumeHistory"] = r;
+
+    GetWeeklyRewards()
+    .then((r) => {
+      qwe["weeklyRewards"] = r;
+
+      res.render("index.ejs", qwe);
+    });
+  });
 });
 
 app.post("/upload-fee-split", function(req, res){
@@ -131,5 +189,6 @@ app.post("/upload-fee-split", function(req, res){
 });
 
 app.use(function (req, res){
-  res.render("404.ejs");
+  res.redirect("/");
+  // res.render("404.ejs");
 });
