@@ -12,7 +12,6 @@
 /* Everything */
 body {
   display: block;
-  margin: 0;
   font-family: droid-sans;
   background-image: url(../img/noise.png);
 }
@@ -29,9 +28,10 @@ body {
 
 .aaa {
   display: inline-block;
-  /*width: 100px;
-  height: 100px;*/
-  /*background: url(../img/external-link.svg) no-repeat center center fixed;*/
+  width: 12px;
+  height: 12px;
+  vertical-align: super;
+  background: url(../img/external-link.svg);
 }
 
 .totals {
@@ -39,7 +39,71 @@ body {
   border: 1px solid black;
 }
 
-.fsa-stats {
+.volume-history table {
+  display: block;
+  height: 200px;
+  overflow-y: auto;
+  border-collapse: collapse;
+  border: 1px solid black;
+
+  thead tr {
+    background-color: #ff9098;
+  }
+
+  tbody tr:nth-child(2n+1) {
+    background-color: #36c6dc;
+  }
+
+  tbody tr:nth-child(2n) {
+    background-color: #d3d3d3;
+  }
+}
+
+.weekly-rewards table {
+  display: block;
+  height: 200px;
+  overflow-y: auto;
+  border-collapse: collapse;
+  border: 1px solid black;
+  text-align: center;
+
+  thead {
+    tr {
+      background-color: #ff9098;
+
+      th {
+        &:nth-child(1){width: 100px;}
+        &:nth-child(2){width: 200px;}
+        &:nth-child(3){width: 100px;}
+        &:nth-child(4){width: 150px;}
+      }
+    }
+  }
+
+  tbody tr {
+    height: 24px;
+  }
+
+  tbody tr:nth-child(2n+1) {
+    background-color: #36c6dc;
+  }
+
+  tbody tr:nth-child(2n) {
+    background-color: #d3d3d3;
+  }
+
+  tbody tr a {
+    color: blue;
+    text-decoration: none;
+  }
+
+  tbody tr a:hover {
+    text-decoration: underline;
+  }
+
+  tbody tr a:active {
+    color: #5252ff;
+  }
 }
 
 .fsa-stats table {
