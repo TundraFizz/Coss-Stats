@@ -14,7 +14,7 @@
   <body>
     <div class="container">
       <div class="volume-history">
-        <table border="1">
+        <table>
           <thead>
             <tr>
               <th>Date</th>
@@ -37,7 +37,7 @@
 
     <div class="container">
       <div class="weekly-rewards">
-        <table border="1">
+        <table>
           <thead>
             <tr>
               <th>ETH Block</th>
@@ -49,8 +49,7 @@
           <tbody>
             <% for(var i = 0; i < weeklyRewards.length; i++){ %>
               <tr>
-                <!-- <td><span><%= weeklyRewards[i]["ethBlock"] %></span><img class="aaa" src="../img/external-link.svg"></td> -->
-                <td><span><%= weeklyRewards[i]["ethBlock"] %></span><img class="aaa" src="../img/sample.svg"></td>
+                <td><a href="https://etherscan.io/block/<%=weeklyRewards[i]['ethBlock']%>" target="_blank"><%= weeklyRewards[i]["ethBlock"] %><span class="aaa"></span></a></td>
                 <td><%= weeklyRewards[i]["date"]     %></td>
                 <td><%= weeklyRewards[i]["volume"]   %></td>
                 <td><%= weeklyRewards[i]["value"]    %></td>
