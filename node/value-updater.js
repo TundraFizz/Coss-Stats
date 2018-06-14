@@ -6,22 +6,20 @@ var fs      = require("fs");
 
 function Log(msg){fs.appendFile("log.txt", msg + "\n", function(err){if(err) return console.log(err);}); }
 
-var db = mysql.createConnection({
-    host    : "127.0.0.1",
-    user    : "root",
-    password: "",
-    database: "coss"
-});
-
 //////////////////////////
 // Crypto Value Updater //
 //////////////////////////
-
 var index = 0;
 var lock  = false;
-
 function UpdateCrypto(){
-  if(lock) return;
+  var db = mysql.createConnection({
+    host    : "mysql",
+    user    : "root",
+    password: "fizz",
+    database: "coss"
+  });
+
+  if(lock) db.end(function(err){return;}
   else     lock = true;
 
   var sql  = "SELECT id, name, symbol_cmc, symbol_coss FROM value";
@@ -31,7 +29,10 @@ function UpdateCrypto(){
     if(rows.length == 0){
       Log("No entries exist, trying again in five seconds");
       lock = false;
-      return;
+
+      db.end(function(err){
+        return;
+      }
     }else if(index == rows.length){
       index = 0;
     }
@@ -60,35 +61,47 @@ function UpdateCrypto(){
               // Log(`${symbolCmc} updated`);
               index++;
               lock = false;
-              return;
+
+              db.end(function(err){
+                return;
+              }
             });
           });
         }else if(++tests == data.length){
           // Log(`${symbolCmc} doesn't exist in CMC`);
           index++;
           lock = false;
-          return;
+
+          db.end(function(err){
+            return;
+          }
         }
       }
     });
   });
 }
 
-// Rate Limit: No more than 30/minute
-// Safe Limit: Once every five seconds
-var timerId = setInterval(UpdateCrypto, 5000);
-
 ////////////////////
 // Volume Updater //
 ////////////////////
+function UpdateVolume(){
+  var db = mysql.createConnection({
+    host    : "mysql",
+    user    : "root",
+    password: "fizz",
+    database: "coss"
+  });
 
-setInterval(()=>{
   // Check if I'm on the hour (minute == 0)
   if(moment().minute() == 0){
     var url = "https://coinmarketcap.com/exchanges/coss/";
 
     request(url, function(err, res, html){
-      if(err) return;
+      if(err){
+        db.end(function(err){
+          return;
+        }
+      }
 
       var now   = moment();
       var year  = now.year();
@@ -104,8 +117,15 @@ setInterval(()=>{
       var sql  = "INSERT INTO volume (date, volume) VALUES (?, ?)";
       var args = [date, volume];
       db.query(sql, args, function(err, rows){
-        return;
+        db.end(function(err){
+          return;
+        }
       });
     });
   }
-}, 30000); // Run this function every 30 seconds
+}
+
+// Rate Limit: No more than 30/minute
+// Safe Limit: Once every five seconds
+var timerUpdateCrypto = setInterval(UpdateCrypto, 5000);
+var timerUpdateVolume = setInterval(UpdateVolume, 30000);
