@@ -12,19 +12,11 @@ function GetVolumeHistory(){return new Promise((done) => {
     database: "coss"
   });
 
-  console.log("GetVolumeHistory");
   var sql  = "SELECT date, volume FROM volume ORDER BY id DESC";
   var args = [];
   var volumeHistory = [];
 
   db.query(sql, args, function(err, rows){
-    console.log("Query Complete");
-    console.log(">>> Rows");
-    console.log(rows);
-    console.log(">>> Error");
-    console.log(err);
-    console.log();
-
     for(r in rows){
       var date = "";
       var hour = moment(rows[r]["date"]).format("HH");
@@ -53,19 +45,11 @@ function GetWeeklyRewards(){return new Promise((done) => {
     database: "coss"
   });
 
-  console.log("GetWeeklyRewards");
   var sql  = "SELECT eth_block, date, volume, value FROM weekly_rewards";
   var args = [];
   var weeklyRewards = [];
 
   db.query(sql, args, function(err, rows){
-    console.log("Query Complete");
-    console.log(">>> Rows");
-    console.log(rows);
-    console.log(">>> Error");
-    console.log(err);
-    console.log();
-
     for(r in rows){
       date = moment(rows[r]["date"]).format("MMMM DD, YYYY @ HH:mm:ss");
 
