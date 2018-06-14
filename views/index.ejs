@@ -44,6 +44,7 @@
               <th>Date</th>
               <th>Volume</th>
               <th>USD per COSS</th>
+              <th>Avg Fee %</th>
             </tr>
           </thead>
           <tbody>
@@ -53,6 +54,7 @@
                 <td><%= weeklyRewards[i]["date"]     %></td>
                 <td><%= weeklyRewards[i]["volume"]   %></td>
                 <td><%= weeklyRewards[i]["value"]    %></td>
+                <td><%= weeklyRewards[i]["fee"]      %></td>
               </tr>
             <% } %>
           </tbody>
