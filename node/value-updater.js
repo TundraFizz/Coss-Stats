@@ -19,7 +19,7 @@ function UpdateCrypto(){
     database: "coss"
   });
 
-  if(lock) db.end(function(err){return;}
+  if(lock) db.end(function(err){return;});
   else     lock = true;
 
   var sql  = "SELECT id, name, symbol_cmc, symbol_coss FROM value";
@@ -32,7 +32,7 @@ function UpdateCrypto(){
 
       db.end(function(err){
         return;
-      }
+      });
     }else if(index == rows.length){
       index = 0;
     }
@@ -64,7 +64,7 @@ function UpdateCrypto(){
 
               db.end(function(err){
                 return;
-              }
+              });
             });
           });
         }else if(++tests == data.length){
@@ -74,7 +74,7 @@ function UpdateCrypto(){
 
           db.end(function(err){
             return;
-          }
+          });
         }
       }
     });
@@ -100,7 +100,7 @@ function UpdateVolume(){
       if(err){
         db.end(function(err){
           return;
-        }
+        });
       }
 
       var now   = moment();
@@ -119,7 +119,7 @@ function UpdateVolume(){
       db.query(sql, args, function(err, rows){
         db.end(function(err){
           return;
-        }
+        });
       });
     });
   }
