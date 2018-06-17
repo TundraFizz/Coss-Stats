@@ -18,17 +18,23 @@ function GetVolumeHistory(){return new Promise((done) => {
 
   db.query(sql, args, function(err, rows){
     for(r in rows){
-      var date = "";
-      var hour = moment(rows[r]["date"]).format("HH");
-
-      if(hour == 0 || r == 0)
-        date = moment(rows[r]["date"]).format("MMMM DD, YYYY");
-
       volumeHistory.push({
-        "date"  : date,
-        "hour"  : hour,
+        "date"  : rows[r]["date"],
+        // "hour"  : hour,
         "volume": rows[r]["volume"]
       });
+
+      // var date = "";
+      // var hour = moment(rows[r]["date"]).format("HH");
+
+      // if(hour == 0 || r == 0)
+      //   date = moment(rows[r]["date"]).format("MMMM DD, YYYY");
+
+      // volumeHistory.push({
+      //   "date"  : date,
+      //   "hour"  : hour,
+      //   "volume": rows[r]["volume"]
+      // });
     }
 
     done(volumeHistory);
@@ -36,17 +42,24 @@ function GetVolumeHistory(){return new Promise((done) => {
 })}
 
 function GetWeeklyRewards(){return new Promise((done) => {
-  var sql  = "SELECT eth_block, date, volume, value, fee FROM weekly_rewards";
+  var sql  = "SELECT eth_block, date, volume, value, fee FROM weekly_rewards ORDER BY id DESC";
   var args = [];
   var weeklyRewards = [];
 
   db.query(sql, args, function(err, rows){
     for(r in rows){
-      date = moment(rows[r]["date"]).local().format("MMMM DD, YYYY @ HH:mm:ss");
+      // date = moment(rows[r]["date"]).local().format("MMMM DD, YYYY @ HH:mm:ss");
+
+      // weeklyRewards.push({
+      //   "ethBlock": rows[r]["eth_block"],
+      //   "date"    : date,
+      //   "volume"  : rows[r]["volume"],
+      //   "value"   : rows[r]["value"]
+      // });
 
       weeklyRewards.push({
         "ethBlock": rows[r]["eth_block"],
-        "date"    : date,
+        "date"    : rows[r]["date"],
         "volume"  : rows[r]["volume"],
         "value"   : rows[r]["value"]
       });
