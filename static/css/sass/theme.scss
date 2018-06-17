@@ -59,6 +59,40 @@ body {
   }
 }
 
+.next-eth-block {
+  .data {
+    div {
+      display: inline-block;
+    }
+
+    .days, .hours, .minutes, .seconds {
+      border: 1px solid black;
+      border-radius: 4px;
+      margin: 4px;
+      padding: 4px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .colon {
+
+    }
+
+    .colon:after {
+      content: ":";
+    }
+  }
+
+  .labels {
+    font-size: 10px;
+
+    div {
+      display: inline-block;
+      margin: 4px;
+    }
+  }
+}
+
 .weekly-rewards table {
   display: block;
   height: 200px;
