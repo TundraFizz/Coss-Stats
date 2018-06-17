@@ -28,6 +28,9 @@ function LoadTable(fsa){
 }
 
 $(document).ready(function(){
+  CountdownTimer();
+  setInterval(CountdownTimer, 10);
+
   if(localStorage.getItem("fsa") !== null){
     var fsa = JSON.parse(localStorage.getItem("fsa"));
     LoadTable(fsa);
@@ -88,6 +91,16 @@ $(document).ready(function(){
 
   $(".delete").click(DeleteFsaData);
 });
+
+function CountdownTimer(){
+  nextEthBlock = moment(nextEthBlock, "ddd MMM D YYYY HH:mm:ss"); // Mon Jun 18 2018 01:00:00 GMT-0700 (Pacific Daylight Time)
+  var countdown = moment.duration(nextEthBlock.diff(moment()));
+
+  $($(".next-eth-block .data .days"   )[0]).html(countdown.days());
+  $($(".next-eth-block .data .hours"  )[0]).html(countdown.hours());
+  $($(".next-eth-block .data .minutes")[0]).html(countdown.minutes());
+  $($(".next-eth-block .data .seconds")[0]).html(countdown.seconds());
+}
 
 function DeleteFsaData(){
   localStorage.removeItem("fsa");
