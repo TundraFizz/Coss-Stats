@@ -4,7 +4,7 @@ var moment  = require("moment");
 var mysql   = require("mysql");
 var fs      = require("fs");
 
-function Log(msg){fs.appendFile("log.txt", msg + "\n", function(err){if(err) return console.log(err);}); }
+function Log(msg){fs.appendFile("log.txt", msg + "\n", function(err){if(err) return console.log(err);});}
 
 //////////////////////////
 // Crypto Value Updater //
@@ -13,9 +13,9 @@ var index = 0;
 var lock  = false;
 function UpdateCrypto(){
   var db = mysql.createConnection({
-    host    : "mysql",
+    host    : "localhost",
     user    : "root",
-    password: "fizz",
+    password: "",
     database: "coss"
   });
 
@@ -26,6 +26,11 @@ function UpdateCrypto(){
   var args = [];
 
   db.query(sql, args, function(err, rows){
+    if(err){
+      console.log(err);
+      return;
+    }
+
     if(rows.length == 0){
       Log("No entries exist, trying again in five seconds");
       lock = false;
