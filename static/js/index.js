@@ -28,6 +28,7 @@ function LoadTable(fsa){
 }
 
 $(document).ready(function(){
+  VolumeHistory();
   CountdownTimer();
   setInterval(CountdownTimer, 10);
 
@@ -91,6 +92,23 @@ $(document).ready(function(){
 
   $(".delete").click(DeleteFsaData);
 });
+
+function VolumeHistory(){
+  console.log(volumeHistory);
+  // volumeHistory = JSON.parse(volumeHistory);
+  console.log(JSON.stringify(volumeHistory));
+  var html = "";
+  for(var i = 0; i < volumeHistory.length; i++){
+    html += `
+    <tr>
+      <td>${volumeHistory[i]["date"]}</td>
+      <td>${volumeHistory[i]["hour"]}</td>
+      <td>${volumeHistory[i]["volume"]}</td>
+    </tr>`;
+  }
+
+  $($(".vh")[0]).html(html);
+}
 
 function CountdownTimer(){
   nextEthBlock = moment(nextEthBlock, "ddd MMM D YYYY HH:mm:ss"); // Mon Jun 18 2018 01:00:00 GMT-0700 (Pacific Daylight Time)

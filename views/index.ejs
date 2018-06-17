@@ -10,7 +10,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script src="/js/index.js"></script>
-    <script>var nextEthBlock="<%= nextEthBlock %>"</script>
+    <script>var nextEthBlock ="<%= nextEthBlock  %>"</script>
+    <script>var weeklyRewards="<%= weeklyRewards %>"</script>
+    <script>var volumeHistory="<%= volumeHistory %>"</script>
+    <script>
+      console.log("===================================");
+      console.log(nextEthBlock);
+      console.log(weeklyRewards);
+      console.log(volumeHistory);
+      console.log("===================================");
+    </script>
   </head>
 
   <body>
@@ -24,15 +33,7 @@
               <th>Volume</th>
             </tr>
           </thead>
-          <tbody>
-            <% for(var i = 0; i < volumeHistory.length; i++){ %>
-              <tr>
-                <td><%= volumeHistory[i]["date"]   %></td>
-                <td><%= volumeHistory[i]["hour"]   %></td>
-                <td><%= volumeHistory[i]["volume"] %></td>
-              </tr>
-            <% } %>
-          </tbody>
+          <tbody class="vh"></tbody>
         </table>
       </div>
     </div>
