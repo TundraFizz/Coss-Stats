@@ -4,14 +4,14 @@ var mysql      = require("mysql");
 var moment     = require("moment");
 var formidable = require("formidable");
 
-function GetVolumeHistory(){return new Promise((done) => {
-  var db = mysql.createConnection({
-    host    : "mysql",
-    user    : "root",
-    password: "fizz",
-    database: "coss"
-  });
+var db = mysql.createConnection({
+  host    : "localhost",
+  user    : "root",
+  password: "",
+  database: "coss"
+});
 
+function GetVolumeHistory(){return new Promise((done) => {
   var sql  = "SELECT date, volume FROM volume ORDER BY id DESC";
   var args = [];
   var volumeHistory = [];
@@ -31,27 +31,18 @@ function GetVolumeHistory(){return new Promise((done) => {
       });
     }
 
-    db.end(function(err){
-      done(volumeHistory);
-    });
+    done(volumeHistory);
   });
 })}
 
 function GetWeeklyRewards(){return new Promise((done) => {
-  var db = mysql.createConnection({
-    host    : "mysql",
-    user    : "root",
-    password: "fizz",
-    database: "coss"
-  });
-
-  var sql  = "SELECT eth_block, date, volume, value FROM weekly_rewards";
+  var sql  = "SELECT eth_block, date, volume, value, fee FROM weekly_rewards";
   var args = [];
   var weeklyRewards = [];
 
   db.query(sql, args, function(err, rows){
     for(r in rows){
-      date = moment(rows[r]["date"]).format("MMMM DD, YYYY @ HH:mm:ss");
+      date = moment(rows[r]["date"]).local().format("MMMM DD, YYYY @ HH:mm:ss");
 
       weeklyRewards.push({
         "ethBlock": rows[r]["eth_block"],
@@ -61,25 +52,33 @@ function GetWeeklyRewards(){return new Promise((done) => {
       });
     }
 
-    db.end(function(err){
-      done(weeklyRewards);
-    });
+    done(weeklyRewards);
+  });
+})}
+
+function GetNextEthBlock(){return new Promise((done) => {
+  var sql = "SELECT date FROM next_eth_block WHERE id=1";
+  db.query(sql, function(err, rows){
+    done(rows[0]["date"]);
   });
 })}
 
 app.get("/", function(req, res){
-  var qwe = {};
-
-  console.log("========== START ==========");
+  var data = {};
 
   GetVolumeHistory()
   .then((r) => {
-    qwe["volumeHistory"] = r;
+    data["volumeHistory"] = r;
 
     GetWeeklyRewards()
     .then((r) => {
-      qwe["weeklyRewards"] = r;
-      res.render("index.ejs", qwe);
+      data["weeklyRewards"] = r;
+
+      GetNextEthBlock()
+      .then((r) => {
+        data["nextEthBlock"] = r;
+        res.render("index.ejs", data);
+      });
     });
   });
 });
