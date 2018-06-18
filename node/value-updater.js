@@ -6,20 +6,21 @@ var fs      = require("fs");
 
 function Log(msg){fs.appendFile("log.txt", msg + "\n", function(err){if(err) return console.log(err);});}
 
+var db = mysql.createConnection({
+  host    : "localhost",
+  user    : "root",
+  password: "",
+  database: "coss"
+});
+
 //////////////////////////
 // Crypto Value Updater //
 //////////////////////////
 var index = 0;
 var lock  = false;
 function UpdateCrypto(){
-  var db = mysql.createConnection({
-    host    : "localhost",
-    user    : "root",
-    password: "",
-    database: "coss"
-  });
 
-  if(lock) db.end(function(err){return;});
+  if(lock) return;
   else     lock = true;
 
   var sql  = "SELECT id, name, symbol_cmc, symbol_coss FROM value";
@@ -34,10 +35,7 @@ function UpdateCrypto(){
     if(rows.length == 0){
       Log("No entries exist, trying again in five seconds");
       lock = false;
-
-      db.end(function(err){
-        return;
-      });
+      return;
     }else if(index == rows.length){
       index = 0;
     }
@@ -66,20 +64,14 @@ function UpdateCrypto(){
               // Log(`${symbolCmc} updated`);
               index++;
               lock = false;
-
-              db.end(function(err){
-                return;
-              });
+              return;
             });
           });
         }else if(++tests == data.length){
           // Log(`${symbolCmc} doesn't exist in CMC`);
           index++;
           lock = false;
-
-          db.end(function(err){
-            return;
-          });
+          return;
         }
       }
     });
@@ -91,9 +83,9 @@ function UpdateCrypto(){
 ////////////////////
 function UpdateVolume(){
   var db = mysql.createConnection({
-    host    : "mysql",
+    host    : "localhost",
     user    : "root",
-    password: "fizz",
+    password: "",
     database: "coss"
   });
 
@@ -103,9 +95,7 @@ function UpdateVolume(){
 
     request(url, function(err, res, html){
       if(err){
-        db.end(function(err){
-          return;
-        });
+        return;
       }
 
       var now   = moment();
@@ -122,9 +112,7 @@ function UpdateVolume(){
       var sql  = "INSERT INTO volume (date, volume) VALUES (?, ?)";
       var args = [date, volume];
       db.query(sql, args, function(err, rows){
-        db.end(function(err){
-          return;
-        });
+        return;
       });
     });
   }
