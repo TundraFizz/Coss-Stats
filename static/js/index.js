@@ -30,6 +30,7 @@ function LoadTable(fsa){
 $(document).ready(function(){
   VolumeHistory();
   CountdownTimer();
+  WeeklyRewards();
   setInterval(CountdownTimer, 10);
 
   if(localStorage.getItem("fsa") !== null){
@@ -94,15 +95,18 @@ $(document).ready(function(){
 });
 
 function VolumeHistory(){
-  console.log(volumeHistory);
-  // volumeHistory = JSON.parse(volumeHistory);
-  console.log(JSON.stringify(volumeHistory));
   var html = "";
   for(var i = 0; i < volumeHistory.length; i++){
+    var date = "";
+    var hour = moment(volumeHistory[i]["date"]).hour();
+
+    if(i == 0 || hour == 0)
+      date = moment(volumeHistory[i]["date"]).format("MMMM DD, YYYY");
+
     html += `
     <tr>
-      <td>${volumeHistory[i]["date"]}</td>
-      <td>${volumeHistory[i]["hour"]}</td>
+      <td>${date}</td>
+      <td>${hour}</td>
       <td>${volumeHistory[i]["volume"]}</td>
     </tr>`;
   }
@@ -111,13 +115,30 @@ function VolumeHistory(){
 }
 
 function CountdownTimer(){
-  nextEthBlock = moment(nextEthBlock, "ddd MMM D YYYY HH:mm:ss"); // Mon Jun 18 2018 01:00:00 GMT-0700 (Pacific Daylight Time)
-  var countdown = moment.duration(nextEthBlock.diff(moment()));
+  var countdown = moment.duration(moment(nextEthBlock).diff(moment()));
 
-  $($(".next-eth-block .data .days"   )[0]).html(countdown.days());
-  $($(".next-eth-block .data .hours"  )[0]).html(countdown.hours());
-  $($(".next-eth-block .data .minutes")[0]).html(countdown.minutes());
-  $($(".next-eth-block .data .seconds")[0]).html(countdown.seconds());
+  $($(".next-eth-block .data .days    div")[0]).html(countdown.days());
+  $($(".next-eth-block .data .hours   div")[0]).html(countdown.hours());
+  $($(".next-eth-block .data .minutes div")[0]).html(countdown.minutes());
+  $($(".next-eth-block .data .seconds div")[0]).html(countdown.seconds());
+}
+
+function WeeklyRewards(){
+  var html = "";
+  for(var i = 0; i < weeklyRewards.length; i++){
+    var date = moment(weeklyRewards[i]["date"]).format("MMMM DD, YYYY @ HH:mm:ss");
+
+    html += `
+    <tr>
+      <td><a href="https://etherscan.io/block/${weeklyRewards[i]['date']}" target="_blank">${weeklyRewards[i]["ethBlock"]}<span class="aaa"></span></a></td>
+      <td>${date}</td>
+      <td>${weeklyRewards[i]["volume"]}</td>
+      <td>${weeklyRewards[i]["value"]}</td>
+      <td>${weeklyRewards[i]["fee"]}</td>
+    </tr>`;
+  }
+
+  $($(".wr")[0]).html(html);
 }
 
 function DeleteFsaData(){
