@@ -18,8 +18,9 @@
     "concurrently": "latest"
   },
   "scripts": {
-    "start": "node server.js",
+    "dev"    : "concurrently --kill-others \"nodemon server.js\" \"npm run build-css\"",
     "develop": "concurrently --kill-others \"nodemon server.js\" \"npm run build-css\"",
+    "start": "node server.js",
     "build-css": "node-sass static/css/sass/theme.scss static/css/theme.css --output-style compressed -w static/css/sass/theme.scss"
   },
   "devDependencies": {},
