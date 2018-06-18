@@ -207,9 +207,36 @@ app.post("/upload-fee-split", function(req, res){
 });
 
 app.post("/send-feedback", function(req, res){
-  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  res.json({"msg":ip, "err":"false"});
-  // res.json({"msg":"Message sent", "err":"false"});
+  var forwardedFor = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  var realIp       = req.headers["x-real-ip"]       || req.connection.remoteAddress;
+  var cache        = [];
+  console.log(req.connection.remoteAddress);
+  console.log(req.connection.remoteAddress);
+  console.log(req.connection.remoteAddress);
+  console.log(req.connection.remoteAddress);
+  console.log(req.connection.remoteAddress);
+  var everything   = JSON.stringify(req.connection, function(key, value){
+    if(typeof value === "object" && value !== null){
+      if(cache.indexOf(value) !== -1){
+        // Duplicate reference found
+        try {
+          return JSON.parse(JSON.stringify(value)); // If this value does not reference a parent it can be deduped
+        }catch(error){
+          return; // discard key if value cannot be deduped
+        }
+      }
+      cache.push(value); // Store value in our collection
+    }
+    return value;
+  });
+  cache = null; // Enable garbage collection
+
+  var data = {
+    "forwarded-for": forwardedFor,
+    "real-ip"      : realIp,
+    "everything"   : everything
+  };
+  res.json({"msg":data, "err":"false"});
   return;
 
   var message     = req["body"]["message"];
