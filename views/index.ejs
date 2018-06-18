@@ -15,191 +15,202 @@
     <script>var nextEthBlock =<%-JSON.stringify(nextEthBlock )%></script>
     <script>var weeklyRewards=<%-JSON.stringify(weeklyRewards)%></script>
     <script>var volumeHistory=<%-JSON.stringify(volumeHistory)%></script>
-    <!-- <script>console.log(nextEthBlock);console.log(weeklyRewards);console.log(volumeHistory);</script> -->
   </head>
 
   <body>
-    <div class="container">
-      <div class="volume-history">
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Hour</th>
-              <th>Volume</th>
-            </tr>
-          </thead>
-          <tbody class="vh"></tbody>
-        </table>
+    <div class="nav-menu">
+      <div class="tab-button" page="volume-tracker">Volume Tracker</div>
+      <div class="tab-button" page="calculators">Calculators</div>
+      <div class="tab-button" page="fsa-worth">FSA Worth</div>
+    </div>
+
+    <div class="page" page="volume-tracker" style="display: none;">
+      <div class="container">
+        <div class="volume-history">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Hour</th>
+                <th>Volume</th>
+              </tr>
+            </thead>
+            <tbody class="vh"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="container">
+        <div>
+          <table class="next-eth-block">
+            <thead></thead>
+            <tbody>
+              <tr class="header">
+                <td class="message" colspan="7">Time until the next snapshot<span class="footnote" title="The table below isn't automatically updated; currently it's something I manually do but I plan on automating it in the future. FSAs are normally distributed within the next 24 hours of the snapshot.">?</span></td>
+              </tr>
+              <tr class="data">
+                <td class="days"><div></div></td>
+                <td class="colon"><div></div></td>
+                <td class="hours"><div></div></td>
+                <td class="colon"><div></div></td>
+                <td class="minutes"><div></div></td>
+                <td class="colon"><div></div></td>
+                <td class="seconds"><div></div></td>
+              </tr>
+              <tr class="labels">
+                <td class="days">DAYS</td>
+                <td class="spacer"></td>
+                <td class="hours">HOURS</td>
+                <td class="spacer"></td>
+                <td class="minutes">MINUTES</td>
+                <td class="spacer"></td>
+                <td class="seconds">SECONDS</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="weekly-rewards">
+          <table>
+            <thead>
+              <tr>
+                <th>ETH Block</th>
+                <th>Date</th>
+                <th>Volume</th>
+                <th>USD per COSS</th>
+                <th>Avg Fee %</th>
+              </tr>
+            </thead>
+            <tbody class="wr"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
-    <div class="container">
-      <div>
-        <table class="next-eth-block">
-          <thead></thead>
-          <tbody>
-            <tr class="header">
-              <td class="message" colspan="7">Time until the next snapshot<span class="footnote" title="The table below isn't automatically updated; currently it's something I manually do but I plan on automating it in the future. FSAs are normally distributed within the next 24 hours of the snapshot.">?</span></td>
-            </tr>
-            <tr class="data">
-              <td class="days"><div></div></td>
-              <td class="colon"><div></div></td>
-              <td class="hours"><div></div></td>
-              <td class="colon"><div></div></td>
-              <td class="minutes"><div></div></td>
-              <td class="colon"><div></div></td>
-              <td class="seconds"><div></div></td>
-            </tr>
-            <tr class="labels">
-              <td class="days">DAYS</td>
-              <td class="spacer"></td>
-              <td class="hours">HOURS</td>
-              <td class="spacer"></td>
-              <td class="minutes">MINUTES</td>
-              <td class="spacer"></td>
-              <td class="seconds">SECONDS</td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="page" page="calculators" style="display: none;">
+      <div class="container">
+        <div class="fsa-calculator">
+          <table>
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td>COSS held</td>
+                <td><input class="coss-held" type="text" value="10000"></td>
+              </tr>
+              <tr>
+                <td>Daily volume ($million)</td>
+                <td><input class="volume" type="text" value="10"></td>
+              </tr>
+              <tr>
+                <td>Average fee %</td>
+                <td><input class="fee-percentage" type="text" value="0.1"></td>
+              </tr>
+              <tr>
+                <td colspan="2"><div class="submit">Calculate</div></td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td>Weekly FSA</td>
+                <td class="fsa-weekly"></td>
+              </tr>
+              <tr>
+                <td>Monthly FSA</td>
+                <td class="fsa-monthly"></td>
+              </tr>
+              <tr>
+                <td>Yearly FSA</td>
+                <td class="fsa-yearly"></td>
+              </tr>
+              <tr>
+                <td>Total COSS worth</td>
+                <td class="total-coss-worth"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="coss-price-calculator">
+          <table>
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td>Expected yearly ROI%</td>
+                <td><input class="expected-roi" type="text" value="100"></td>
+              </tr>
+              <tr>
+                <td>Daily volume ($million)</td>
+                <td><input class="volume" type="text" value="10"></td>
+              </tr>
+              <tr>
+                <td>Average fee %</td>
+                <td><input class="fee-percentage" type="text" value="0.1"></td>
+              </tr>
+              <tr>
+                <td colspan="2"><div class="submit">Calculate</div></td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td>Estimated price</td>
+                <td class="estimated-price"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
-    <div class="container">
-      <div class="weekly-rewards">
-        <table>
-          <thead>
-            <tr>
-              <th>ETH Block</th>
-              <th>Date</th>
-              <th>Volume</th>
-              <th>USD per COSS</th>
-              <th>Avg Fee %</th>
-            </tr>
-          </thead>
-          <tbody class="wr"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="fsa-calculator">
-        <table>
-          <thead></thead>
-          <tbody>
-            <tr>
-              <td>COSS held</td>
-              <td><input class="coss-held" type="text" value="10000"></td>
-            </tr>
-            <tr>
-              <td>Daily volume ($million)</td>
-              <td><input class="volume" type="text" value="10"></td>
-            </tr>
-            <tr>
-              <td>Average fee %</td>
-              <td><input class="fee-percentage" type="text" value="0.1"></td>
-            </tr>
-            <tr>
-              <td colspan="2"><div class="submit">Calculate</div></td>
-            </tr>
-          </tbody>
-        </table>
-        <table>
-          <thead></thead>
-          <tbody>
-            <tr>
-              <td>Weekly FSA</td>
-              <td class="fsa-weekly"></td>
-            </tr>
-            <tr>
-              <td>Monthly FSA</td>
-              <td class="fsa-monthly"></td>
-            </tr>
-            <tr>
-              <td>Yearly FSA</td>
-              <td class="fsa-yearly"></td>
-            </tr>
-            <tr>
-              <td>Total COSS worth</td>
-              <td class="total-coss-worth"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="coss-price-calculator">
-        <table>
-          <thead></thead>
-          <tbody>
-            <tr>
-              <td>Expected yearly ROI%</td>
-              <td><input class="expected-roi" type="text"></td>
-            </tr>
-            <tr>
-              <td>Daily volume ($million)</td>
-              <td><input class="volume" type="text"></td>
-            </tr>
-            <tr>
-              <td>Average fee %</td>
-              <td><input class="fee-percentage" type="text"></td>
-            </tr>
-            <tr>
-              <td colspan="2"><div class="submit">Calculate</div></td>
-            </tr>
-          </tbody>
-        </table>
-        <table>
-          <thead></thead>
-          <tbody>
-            <tr>
-              <td>Estimated price</td>
-              <td class="estimated-price"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="totals">
-        <table>
-          <thead></thead>
-          <tbody>
-            <tr>
-              <td>FSA Value</td>
-              <td class="fsa-value">$0.00</td>
-            </tr>
-            <tr>
-              <td>Net Value</td>
-              <td class="net-value">$0.00</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="fsa-stats">
-        <table>
-          <thead>
-            <tr>
-              <th>Token</th>
-              <th>Remaining</th>
-              <th>FSA Value</th>
-              <th>Fee</th>
-              <th>Net Value</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+    <div class="page" page="fsa-worth" style="display: none;">
+      <div class="container">
+        <div class="totals">
+          <table>
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td>FSA Value</td>
+                <td class="fsa-value">$0.00</td>
+              </tr>
+              <tr>
+                <td>Net Value</td>
+                <td class="net-value">$0.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div class="delete">Clear Data</div>
+      <div class="container">
+        <div class="fsa-stats">
+          <table>
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Remaining</th>
+                <th>FSA Value</th>
+                <th>Fee</th>
+                <th>Net Value</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
 
-      <div class="dropzone">
-        <div>Drag and drop your Total_Fee_Split_Allocation.csv here</div>
+        <div class="delete">Clear Data</div>
+
+        <div class="dropzone">
+          <div>Drag and drop your Total_Fee_Split_Allocation.csv here</div>
+        </div>
       </div>
     </div>
   </body>
