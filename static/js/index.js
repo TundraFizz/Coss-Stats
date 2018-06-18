@@ -10,6 +10,23 @@ function Start(){
     $(".dropzone").show();
   }
 
+  if(localStorage.getItem("page") !== null){
+    var page = localStorage.getItem("page");
+    $(`.page[page=${page}]`).css("display", "block");
+  }else{
+    var page = "volume-tracker";
+    $(`.page[page=${page}]`).css("display", "block");
+    localStorage.setItem("page", page);
+  }
+
+  if(localStorage.getItem("fsa-coss-held")       !== null) $("#fsa-coss-held"      ).val(localStorage.getItem("fsa-coss-held"      ));
+  if(localStorage.getItem("fsa-volume")          !== null) $("#fsa-volume"         ).val(localStorage.getItem("fsa-volume"         ));
+  if(localStorage.getItem("fsa-fee-percentage")  !== null) $("#fsa-fee-percentage" ).val(localStorage.getItem("fsa-fee-percentage" ));
+  if(localStorage.getItem("coss-expected-roi")   !== null) $("#coss-expected-roi"  ).val(localStorage.getItem("coss-expected-roi"  ));
+  if(localStorage.getItem("coss-volume")         !== null) $("#coss-volume"        ).val(localStorage.getItem("coss-volume"        ));
+  if(localStorage.getItem("coss-fee-percentage") !== null) $("#coss-fee-percentage").val(localStorage.getItem("coss-fee-percentage"));
+
+  // Investigate this
   $.event.props.push("dataTransfer");
 }
 
@@ -105,9 +122,9 @@ function Stop(e){
 
 $(".fsa-calculator .submit").click(function(){
   var data = {
-    "cossHeld"     : $($(".fsa-calculator .coss-held")[0]),
-    "volume"       : $($(".fsa-calculator .volume")[0]),
-    "feePercentage": $($(".fsa-calculator .fee-percentage")[0])
+    "cossHeld"     : $($("#fsa-coss-held")[0]),
+    "volume"       : $($("#fsa-volume")[0]),
+    "feePercentage": $($("#fsa-fee-percentage")[0])
   };
 
   var failed = false;
@@ -192,9 +209,9 @@ $(".fsa-calculator .submit").click(function(){
 
 $(".coss-price-calculator .submit").click(function(){
   var data = {
-    "expectedRoi"  : $($(".coss-price-calculator .expected-roi")[0]),
-    "volume"       : $($(".coss-price-calculator .volume")[0]),
-    "feePercentage": $($(".coss-price-calculator .fee-percentage")[0])
+    "expectedRoi"  : $($("#coss-expected-roi")[0]),
+    "volume"       : $($("#coss-volume")[0]),
+    "feePercentage": $($("#coss-fee-percentage")[0])
   };
 
   var failed = false;
@@ -267,8 +284,19 @@ $(".coss-price-calculator .submit").click(function(){
   // 10% ROI would be $0.0182 / 0.10 = 0.182
 
   $($(".coss-price-calculator .estimated-price")[0]).text(adjustedForRoi);
+});
 
+$(".page-button").click(function(){
+  var page = $(this).attr("page");
+  $(".page[page]").css("display", "none");
+  $(`.page[page=${page}]`).css("display", "block");
+  localStorage.setItem("page", page);
+});
 
+$("input").bind("input", function(){
+  var id  = $(this).attr("id");
+  var val = $(this).val();
+  localStorage.setItem(id, val);
 });
 
 $(".dropzone").on({
@@ -315,13 +343,15 @@ $(".dropzone").on({
   }
 });
 
-$(".tab-button").click(function(){
-  var page = $(this).attr("page");
-  $(".page[page]").css("display", "none");
-  $(`.page[page=${page}]`).css("display", "block");
-});
-
 $(".delete").click(DeleteFsaData);
+
+$(".feedback .submit").click(function(){
+  var message = $(".feedback .textarea").val();
+
+  $.post("send-feedback", {"message":message}, function(res){
+    console.log(res);
+  });
+});
 
 Start();
 VolumeHistory();
