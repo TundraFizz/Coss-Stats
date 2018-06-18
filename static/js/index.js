@@ -48,7 +48,7 @@ function VolumeHistory(){
     var date = "";
     var hour = moment(volumeHistory[i]["date"]).hour();
 
-    if(i == 0 || hour == 0)
+    if(i == 0 || hour == 23)
       date = moment(volumeHistory[i]["date"]).format("MMMM DD, YYYY");
 
     html += `
@@ -128,7 +128,7 @@ $(".fsa-calculator .submit").click(function(){
           }, 500, "easeOutQuad");
         });
       }
-    })(data, val);
+    })(self, val);
 
     if(isNaN(val) || !val){
       failed = true;
@@ -158,6 +158,7 @@ $(".fsa-calculator .submit").click(function(){
   // There is about 100,000,000 (100 million) COSS in circulation
   var cossInCirculation = 100000000;
 
+  // Divide by the coss in circulation to find out how much 1 coss will get you in USD per week
   userFeePayout /= cossInCirculation;
 
   var weeklyIncome   = (userFeePayout * cossHeld).toFixed(2);
@@ -183,14 +184,91 @@ $(".fsa-calculator .submit").click(function(){
   // payout per coss: 0.0001008
   // w income       : 2.52
 
-  $($(".fsa-weekly")[0]).text(weeklyIncome);
-  $($(".fsa-monthly")[0]).text(monthlyIncome);
-  $($(".fsa-yearly")[0]).text(yearlyIncome);
-  $($(".total-coss-worth")[0]).text(totalCossWorth);
+  $($(".fsa-calculator .fsa-weekly")[0]).text(weeklyIncome);
+  $($(".fsa-calculator .fsa-monthly")[0]).text(monthlyIncome);
+  $($(".fsa-calculator .fsa-yearly")[0]).text(yearlyIncome);
+  $($(".fsa-calculator .total-coss-worth")[0]).text(totalCossWorth);
 });
 
 $(".coss-price-calculator .submit").click(function(){
-  alert("1");
+  var data = {
+    "expectedRoi"  : $($(".coss-price-calculator .expected-roi")[0]),
+    "volume"       : $($(".coss-price-calculator .volume")[0]),
+    "feePercentage": $($(".coss-price-calculator .fee-percentage")[0])
+  };
+
+  var failed = false;
+
+  for(i in data){
+    var self = data[i];
+    var val  = $(self).val().trim();
+
+    // Encapsulate self and val because of the delayed funcation inside
+    (function(self, val){
+      // If the element isn't animated, animate a glowing red border over the invalid field
+      if((isNaN(val) || !val) && !$(self).is(":animated")){
+        $(self).animate({
+          "border-color": "red"
+        }, 500, "easeInQuad", function(){
+          $(self).animate({
+            "border-color": "transparent"
+          }, 500, "easeOutQuad");
+        });
+      }
+    })(self, val);
+
+    if(isNaN(val) || !val){
+      failed = true;
+    }else{
+      data[i] = val;
+    }
+  }
+
+  if(failed)
+    return;
+
+  // All fields are valid
+  var expectedRoi   = data["expectedRoi"] / 100;
+  var volume        = data["volume"];
+  var feePercentage = data["feePercentage"] / 100;
+  var weeklyVolume  = volume * 7;
+
+  // 100% ROI   ( *1 )
+  // 10,000,000 dv
+  // 0.1%       af%
+
+  // Multiply weekly volume by average fee% to get the amount in millions
+  var totalFeePayout = weeklyVolume * feePercentage;
+
+  // Multiply the result by 1,000,000 to get the actual value
+  totalFeePayout *= 1000000;
+
+  // The COSS exchange gets half of the total fee payout
+  userFeePayout = totalFeePayout / 2;
+
+  // There is about 100,000,000 (100 million) COSS in circulation
+  var cossInCirculation = 100000000;
+
+  // Divide by the coss in circulation to find out how much 1 coss will get you in USD per week
+  userFeePayout /= cossInCirculation;
+
+  // Multiply this by 52 to see how much 1 coss will generate in a year
+  var yearlyPayoutFromOneCoss = userFeePayout * 52;
+
+  var adjustedForRoi = yearlyPayoutFromOneCoss / expectedRoi;
+
+  // Example:
+  // Daily volume:  10 million
+  // Average Fee :  0.1%
+  // =>            $0.0182
+  // This is expecting 100% ROI
+  //
+  // 50% ROI would be $0.0182 / 0.50 = 0.0364
+  // 10% ROI would be $0.0182 / 0.10 = 0.182
+
+  $($(".coss-price-calculator .estimated-price")[0]).text(adjustedForRoi);
+
+
 });
 
 $(".dropzone").on({
@@ -235,6 +313,12 @@ $(".dropzone").on({
       }
     });
   }
+});
+
+$(".tab-button").click(function(){
+  var page = $(this).attr("page");
+  $(".page[page]").css("display", "none");
+  $(`.page[page=${page}]`).css("display", "block");
 });
 
 $(".delete").click(DeleteFsaData);
