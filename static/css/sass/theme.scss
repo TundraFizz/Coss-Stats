@@ -16,6 +16,9 @@ body {
   background-image: url(../img/noise.png);
 }
 
+/* I prefer collapsing the borders on all my tables */
+table {border-collapse: collapse;}
+
 .container {
   width: 100%;
   margin: 10px 8px;
@@ -35,7 +38,6 @@ body {
 }
 
 .totals {
-  border-collapse: collapse;
   border: 1px solid black;
 }
 
@@ -43,7 +45,6 @@ body {
   display: block;
   height: 200px;
   overflow-y: auto;
-  border-collapse: collapse;
   border: 1px solid black;
 
   thead tr {
@@ -60,35 +61,55 @@ body {
 }
 
 .next-eth-block {
-  .data {
-    div {
-      display: inline-block;
+  .header {
+    .message {
+      padding: 0;
     }
 
+    .footnote {
+      position: relative;
+      top: -5px;
+      left: 1px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+  }
+
+  .data {
     .days, .hours, .minutes, .seconds {
-      border: 1px solid black;
-      border-radius: 4px;
-      margin: 4px;
-      padding: 4px;
-      width: 20px;
-      text-align: center;
+      padding: 0;
+
+      div {
+        border: 1px solid black;
+        border-radius: 4px;
+        margin: 0 auto;
+        padding: 4px;
+        width: 20px;
+        text-align: center;
+      }
     }
 
     .colon {
+      width: 10px;
+      padding: 0;
+      text-align: center;
 
-    }
-
-    .colon:after {
-      content: ":";
+      div:after {
+        content: ":";
+      }
     }
   }
 
   .labels {
     font-size: 10px;
+    text-align: center;
 
-    div {
-      display: inline-block;
-      margin: 4px;
+    td {
+      padding: 4px 0 0 0;
+    }
+
+    .days, .hours, .minutes, .seconds {
+      min-width: 44px;
     }
   }
 }
@@ -97,7 +118,6 @@ body {
   display: block;
   height: 200px;
   overflow-y: auto;
-  border-collapse: collapse;
   border: 1px solid black;
   text-align: center;
 
@@ -140,11 +160,34 @@ body {
   }
 }
 
+.fsa-calculator,
+.coss-price-calculator {
+  tr:last-child {
+    text-align: center;
+
+    .submit {
+      display: inline-block;
+      padding: 2px;
+      border-radius: 6px;
+      border: 1px solid black;
+      background-color: #c5c5c5;
+      cursor: pointer;
+    }
+
+    .submit:hover {
+      background-color: #cccccc;
+    }
+
+    .submit:active {
+      background-color: darkgray;
+    }
+  }
+}
+
 .fsa-stats table {
   display: block;
   height: 400px;
   overflow-y: scroll;
-  border-collapse: collapse;
   border: 1px solid black;
 }
 
