@@ -8,12 +8,14 @@
     <link rel="shortcut icon" href="/img/icon.jpg">
     <link rel="stylesheet"    href="/css/theme.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script src="/js/index.js"></script>
+    <script>var cossValue    =<%-JSON.stringify(cossValue    )%></script>
     <script>var nextEthBlock =<%-JSON.stringify(nextEthBlock )%></script>
     <script>var weeklyRewards=<%-JSON.stringify(weeklyRewards)%></script>
     <script>var volumeHistory=<%-JSON.stringify(volumeHistory)%></script>
-    <script>console.log(nextEthBlock);console.log(weeklyRewards);console.log(volumeHistory);</script>
+    <!-- <script>console.log(nextEthBlock);console.log(weeklyRewards);console.log(volumeHistory);</script> -->
   </head>
 
   <body>
@@ -87,15 +89,15 @@
           <tbody>
             <tr>
               <td>COSS held</td>
-              <td><input class="coss-held" type="text"></td>
+              <td><input class="coss-held" type="text" value="10000"></td>
             </tr>
             <tr>
               <td>Daily volume ($million)</td>
-              <td><input class="volume" type="text"></td>
+              <td><input class="volume" type="text" value="10"></td>
             </tr>
             <tr>
               <td>Average fee %</td>
-              <td><input class="fee-percentage" type="text"></td>
+              <td><input class="fee-percentage" type="text" value="0.1"></td>
             </tr>
             <tr>
               <td colspan="2"><div class="submit">Calculate</div></td>
@@ -107,19 +109,19 @@
           <tbody>
             <tr>
               <td>Weekly FSA</td>
-              <td>Placeholder</td>
+              <td class="fsa-weekly"></td>
             </tr>
             <tr>
               <td>Monthly FSA</td>
-              <td>Placeholder</td>
+              <td class="fsa-monthly"></td>
             </tr>
             <tr>
               <td>Yearly FSA</td>
-              <td>Placeholder</td>
+              <td class="fsa-yearly"></td>
             </tr>
             <tr>
               <td>Total COSS worth</td>
-              <td>Placeholder</td>
+              <td class="total-coss-worth"></td>
             </tr>
           </tbody>
         </table>
@@ -153,7 +155,7 @@
           <tbody>
             <tr>
               <td>Estimated price</td>
-              <td>Placeholder</td>
+              <td class="estimated-price"></td>
             </tr>
           </tbody>
         </table>
