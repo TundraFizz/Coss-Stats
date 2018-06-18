@@ -11,6 +11,14 @@ var db = mysql.createConnection({
   database: "coss"
 });
 
+function GetCossValue(){return new Promise((done) => {
+  var sql = "SELECT value FROM value WHERE name='COSS'";
+
+  db.query(sql, function(err, rows){
+    done(rows[0]["value"]);
+  });
+})}
+
 function GetVolumeHistory(){return new Promise((done) => {
   var sql  = "SELECT date, volume FROM volume ORDER BY id DESC";
   var args = [];
@@ -58,18 +66,24 @@ function GetNextEthBlock(){return new Promise((done) => {
 app.get("/", function(req, res){
   var data = {};
 
-  GetVolumeHistory()
+  GetCossValue()
   .then((r) => {
-    data["volumeHistory"] = r;
+    data["cossValue"] = r;
 
-    GetWeeklyRewards()
+    GetVolumeHistory()
     .then((r) => {
-      data["weeklyRewards"] = r;
+      data["volumeHistory"] = r;
 
-      GetNextEthBlock()
+      GetWeeklyRewards()
       .then((r) => {
-        data["nextEthBlock"] = r;
-        res.render("index.ejs", data);
+        data["weeklyRewards"] = r;
+
+        GetNextEthBlock()
+        .then((r) => {
+          data["nextEthBlock"] = r;
+
+          res.render("index.ejs", data);
+        });
       });
     });
   });
