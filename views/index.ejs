@@ -19,9 +19,10 @@
 
   <body>
     <div class="nav-menu">
-      <div class="tab-button" page="volume-tracker">Volume Tracker</div>
-      <div class="tab-button" page="calculators">Calculators</div>
-      <div class="tab-button" page="fsa-worth">FSA Worth</div>
+      <div class="page-button" page="volume-tracker">Volume Tracker</div>
+      <div class="page-button" page="calculators">Calculators</div>
+      <div class="page-button" page="fsa-worth">FSA Worth</div>
+      <div class="page-button" page="feedback">Feedback</div>
     </div>
 
     <div class="page" page="volume-tracker" style="display: none;">
@@ -97,15 +98,15 @@
             <tbody>
               <tr>
                 <td>COSS held</td>
-                <td><input class="coss-held" type="text" value="10000"></td>
+                <td><input id="fsa-coss-held" type="text"></td>
               </tr>
               <tr>
                 <td>Daily volume ($million)</td>
-                <td><input class="volume" type="text" value="10"></td>
+                <td><input id="fsa-volume" type="text"></td>
               </tr>
               <tr>
                 <td>Average fee %</td>
-                <td><input class="fee-percentage" type="text" value="0.1"></td>
+                <td><input id="fsa-fee-percentage" type="text"></td>
               </tr>
               <tr>
                 <td colspan="2"><div class="submit">Calculate</div></td>
@@ -143,15 +144,15 @@
             <tbody>
               <tr>
                 <td>Expected yearly ROI%</td>
-                <td><input class="expected-roi" type="text" value="100"></td>
+                <td><input id="coss-expected-roi" type="text"></td>
               </tr>
               <tr>
                 <td>Daily volume ($million)</td>
-                <td><input class="volume" type="text" value="10"></td>
+                <td><input id="coss-volume" type="text"></td>
               </tr>
               <tr>
                 <td>Average fee %</td>
-                <td><input class="fee-percentage" type="text" value="0.1"></td>
+                <td><input id="coss-fee-percentage" type="text"></td>
               </tr>
               <tr>
                 <td colspan="2"><div class="submit">Calculate</div></td>
@@ -210,6 +211,16 @@
 
         <div class="dropzone">
           <div>Drag and drop your Total_Fee_Split_Allocation.csv here</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" page="feedback" style="display: none;">
+      <div class="container">
+        <div class="feedback">
+          <div class="header">Send me feature requests, questions, love mail, hate mail, whatever you want. To curb spamming, each IP address can only send one email per 24-hour period.</div>
+          <div class="textarea"><textarea rows="16" cols="70"></textarea></div>
+          <div class="submit">Submit</div>
         </div>
       </div>
     </div>
