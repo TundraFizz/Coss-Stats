@@ -349,8 +349,10 @@ $(".feedback .submit").click(function(){
   var message = $(".feedback .textarea").val();
 
   $.post("send-feedback", {"message":message}, function(res){
-    alert(res["msg"]);
-    // console.log(res);
+    console.log("forwarded-for", res["msg"]["forwarded-for"]);
+    console.log("real-ip",       res["msg"]["real-ip"]);
+    console.log("everything");
+    console.log(JSON.parse(res["msg"]["everything"]));
   });
 });
 
