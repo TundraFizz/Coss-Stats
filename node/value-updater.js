@@ -1,3 +1,4 @@
+var app     = require("../server.js");
 var request = require("request");
 var cheerio = require("cheerio");
 var moment  = require("moment");
@@ -7,10 +8,10 @@ var fs      = require("fs");
 function Log(msg){fs.appendFile("log.txt", msg + "\n", function(err){if(err) return console.log(err);});}
 
 var db = mysql.createConnection({
-  host    : "localhost",
-  user    : "root",
-  password: "",
-  database: "coss"
+  "host"    : app["data"]["mysql"]["host"],
+  "user"    : app["data"]["mysql"]["user"],
+  "password": app["data"]["mysql"]["password"],
+  "database": app["data"]["mysql"]["database"]
 });
 
 //////////////////////////
@@ -82,13 +83,6 @@ function UpdateCrypto(){
 // Volume Updater //
 ////////////////////
 function UpdateVolume(){
-  var db = mysql.createConnection({
-    host    : "localhost",
-    user    : "root",
-    password: "",
-    database: "coss"
-  });
-
   // Check if I'm on the hour (minute == 0)
   if(moment().minute() == 0){
     var url = "https://coinmarketcap.com/exchanges/coss/";
