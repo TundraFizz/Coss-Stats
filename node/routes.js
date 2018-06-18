@@ -3,12 +3,13 @@ var fs         = require("fs");
 var mysql      = require("mysql");
 var moment     = require("moment");
 var formidable = require("formidable");
+var emailer    = require("nodemailer");
 
 var db = mysql.createConnection({
-  host    : "localhost",
-  user    : "root",
-  password: "",
-  database: "coss"
+  "host"    : app["data"]["mysql"]["host"],
+  "user"    : app["data"]["mysql"]["user"],
+  "password": app["data"]["mysql"]["password"],
+  "database": app["data"]["mysql"]["database"]
 });
 
 function GetCossValue(){return new Promise((done) => {
@@ -202,6 +203,32 @@ app.post("/upload-fee-split", function(req, res){
         });
       });
     });
+  });
+});
+
+app.post("/send-feedback", function(req, res){
+  var message     = req["body"]["message"];
+  var username    = app["data"]["email"]["username"];
+  var password    = app["data"]["email"]["password"];
+  var sendEmailTo = app["data"]["sendEmailTo"];
+
+  var transporter = emailer.createTransport({
+    "service": "gmail",
+    "auth": {
+      "user": username,
+      "pass": password
+    }
+  });
+
+  var mailOptions = {
+    "from"   : username,
+    "to"     : sendEmailTo,
+    "subject": "coss-stats.io feedback",
+    "text"   : message
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+    res.json({"msg":"Message sent", "err":"false"});
   });
 });
 
