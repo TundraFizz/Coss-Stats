@@ -207,6 +207,11 @@ app.post("/upload-fee-split", function(req, res){
 });
 
 app.post("/send-feedback", function(req, res){
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  res.json({"msg":ip, "err":"false"});
+  // res.json({"msg":"Message sent", "err":"false"});
+  return;
+
   var message     = req["body"]["message"];
   var username    = app["data"]["email"]["username"];
   var password    = app["data"]["email"]["password"];
