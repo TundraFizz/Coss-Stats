@@ -15,10 +15,11 @@
     "cheerio": "latest",
     "mysql": "latest",
     "nodemon": "latest",
-    "concurrently": "latest"
+    "concurrently": "latest",
+    "nodemailer": "latest"
   },
   "scripts": {
-    "dev"    : "concurrently --kill-others \"nodemon server.js\" \"npm run build-css\"",
+    "dev": "concurrently --kill-others \"nodemon server.js\" \"npm run build-css\"",
     "develop": "concurrently --kill-others \"nodemon server.js\" \"npm run build-css\"",
     "start": "node server.js",
     "build-css": "node-sass static/css/sass/theme.scss static/css/theme.css --output-style compressed -w static/css/sass/theme.scss"
