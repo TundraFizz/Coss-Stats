@@ -207,60 +207,77 @@ app.post("/upload-fee-split", function(req, res){
 });
 
 app.post("/send-feedback", function(req, res){
-  var forwardedFor = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-  var realIp       = req.headers["x-real-ip"]       || req.connection.remoteAddress;
-  var cache        = [];
-  console.log(req.connection.remoteAddress);
-  console.log(req.connection.remoteAddress);
-  console.log(req.connection.remoteAddress);
-  console.log(req.connection.remoteAddress);
-  console.log(req.connection.remoteAddress);
-  var everything   = JSON.stringify(req.connection, function(key, value){
-    if(typeof value === "object" && value !== null){
-      if(cache.indexOf(value) !== -1){
-        // Duplicate reference found
-        try {
-          return JSON.parse(JSON.stringify(value)); // If this value does not reference a parent it can be deduped
-        }catch(error){
-          return; // discard key if value cannot be deduped
-        }
+  var ip = req.headers["x-real-ip"];
+
+  if(ip === undefined || ip === null){
+    res.json({"msg":"Bad IP address", "err":"false"});
+    return;
+  }
+
+  var sql  = "SELECT date FROM feedback_ip WHERE ip=?";
+  var args = [ip];
+
+  db.query(sql, args, function(err, rows){
+    console.log(rows.length);
+    if(rows.length == 0){
+      console.log("This person has never left feedback before, insert a new row");
+
+      var sql  = "INSERT INTO feedback_ip (ip) VALUES (?)";
+      var args = [ip];
+
+      db.query(sql, args, function(err, rows){
+        console.log("The row has been inserted");
+        // console.log(err);
+        // console.log("--------------------");
+        // console.log(rows);
+        // console.log("--------------------");
+
+
+        var message     = req["body"]["message"];
+        var username    = app["data"]["email"]["username"];
+        var password    = app["data"]["email"]["password"];
+        var sendEmailTo = app["data"]["sendEmailTo"];
+
+        var transporter = emailer.createTransport({
+          "service": "gmail",
+          "auth": {
+            "user": username,
+            "pass": password
+          }
+        });
+
+        var mailOptions = {
+          "from"   : username,
+          "to"     : sendEmailTo,
+          "subject": "coss-stats.io feedback",
+          "text"   : message
+        };
+
+        transporter.sendMail(mailOptions, function(error, info){
+          res.json({"msg":"Message sent", "err":"false"});
+          return;
+        });
+      });
+    }else{
+      console.log("This person HAS left feedback; check for 24 hours");
+      var then      = rows[0]["date"];
+      var countdown = moment.duration(moment(moment()).diff(then));
+
+      if(countdown.days() > 0){
+        var sql  = "UPDATE feedback_ip SET date=NOW() WHERE ip=?";
+        var args = [ip];
+
+        db.query(sql, args, function(err, rows){
+          console.log("YES");
+          res.json({"msg":"Message sent", "err":"false"});
+          return;
+        });
+      }else{
+        console.log("NO");
+        res.json({"msg":"You must wait at least 24 hours before sending another email", "err":"false"});
+        return;
       }
-      cache.push(value); // Store value in our collection
     }
-    return value;
-  });
-  cache = null; // Enable garbage collection
-
-  var data = {
-    "forwarded-for": forwardedFor,
-    "real-ip"      : realIp,
-    "everything"   : everything
-  };
-  res.json({"msg":data, "err":"false"});
-  return;
-
-  var message     = req["body"]["message"];
-  var username    = app["data"]["email"]["username"];
-  var password    = app["data"]["email"]["password"];
-  var sendEmailTo = app["data"]["sendEmailTo"];
-
-  var transporter = emailer.createTransport({
-    "service": "gmail",
-    "auth": {
-      "user": username,
-      "pass": password
-    }
-  });
-
-  var mailOptions = {
-    "from"   : username,
-    "to"     : sendEmailTo,
-    "subject": "coss-stats.io feedback",
-    "text"   : message
-  };
-
-  transporter.sendMail(mailOptions, function(error, info){
-    res.json({"msg":"Message sent", "err":"false"});
   });
 });
 
