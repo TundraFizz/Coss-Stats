@@ -1,12 +1,15 @@
-var fs = require("fs");
+var fs     = require("fs");
+var moment = require("moment");
 
 function Log(){}
 
 Log.prototype.Write = function(msg){
-  fs.appendFile("log/log-coss-stats.txt", msg + "\n", function(err){
+  var now = moment().format("MMM DD, YYYY @ HH:mm:ss");
+  msg = `${now}: ${msg}\n`;
+
+  fs.appendFile("log/log-coss-stats.txt", msg, function(err){
     if(err)
-      return;
-    console.log(err);
+      console.log(err);
   });
 };
 
