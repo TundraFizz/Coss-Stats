@@ -1,11 +1,10 @@
 var app     = require("../server.js");
+var log     = require("./log.js");
 var request = require("request");
 var cheerio = require("cheerio");
 var moment  = require("moment");
 var mysql   = require("mysql");
 var fs      = require("fs");
-
-function Log(msg){fs.appendFile("log.txt", msg + "\n", function(err){if(err) return console.log(err);});}
 
 var db = mysql.createConnection({
   "host"    : app["data"]["mysql"]["host"],
@@ -29,12 +28,12 @@ function UpdateCrypto(){
 
   db.query(sql, args, function(err, rows){
     if(err){
-      console.log(err);
+      log.Log(err);
       return;
     }
 
     if(rows.length == 0){
-      Log("No entries exist, trying again in five seconds");
+      log.Log("No entries exist, trying again in five seconds");
       lock = false;
       return;
     }else if(index == rows.length){
@@ -62,14 +61,12 @@ function UpdateCrypto(){
             var args = [value, id];
 
             db.query(sql, args, function(err, rows){
-              // Log(`${symbolCmc} updated`);
               index++;
               lock = false;
               return;
             });
           });
         }else if(++tests == data.length){
-          // Log(`${symbolCmc} doesn't exist in CMC`);
           index++;
           lock = false;
           return;
