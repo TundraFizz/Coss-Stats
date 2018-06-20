@@ -28,7 +28,7 @@ function UpdateCrypto(){
 
   db.query(sql, args, function(err, rows){
     if(err){
-      log.Log(err);
+      log.Write(err);
       return;
     }
 
@@ -45,7 +45,12 @@ function UpdateCrypto(){
     var symbolCmc  = rows[index]["symbol_cmc"];
     var symbolCoss = rows[index]["symbol_coss"];
 
-    request("https://api.coinmarketcap.com/v2/listings/", {"json":"true"}, function(error, res, obj){
+    request("https://api.coinmarketcap.com/v2/listings/", {"json":"true"}, function(err, res, obj){
+      if(err){
+        log.Write(err);
+        return;
+      }
+
       var data  = obj["data"];
       var tests = 0;
 
@@ -54,11 +59,15 @@ function UpdateCrypto(){
         var cmcSymbol = data[d]["symbol"];
 
         if(cmcName == name && cmcSymbol == symbolCmc){
-          request(`https://api.coinmarketcap.com/v2/ticker/${data[d]["id"]}/?convert=USD`, {"json":"true"}, function(error, res, obj){
-            var value = obj["data"]["quotes"]["USD"]["price"];
+          request(`https://api.coinmarketcap.com/v2/ticker/${data[d]["id"]}/?convert=USD`, {"json":"true"}, function(err, res, obj){
+            if(err){
+              log.Write(err);
+              return;
+            }
 
-            var sql  = "UPDATE value SET value=? WHERE id=?";
-            var args = [value, id];
+            var value = obj["data"]["quotes"]["USD"]["price"];
+            var sql   = "UPDATE value SET value=? WHERE id=?";
+            var args  = [value, id];
 
             db.query(sql, args, function(err, rows){
               index++;
