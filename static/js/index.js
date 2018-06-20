@@ -353,7 +353,9 @@ $(".feedback .submit").click(function(){
   var message = $(".feedback .textarea textarea").val();
 
   $.post("send-feedback", {"message":message}, function(res){
-    console.log(res["msg"]);
+    alert(res["msg"]);
+    if(res["msg"] == "Message sent")
+      $(".feedback .textarea textarea").val("");
   });
 });
 
