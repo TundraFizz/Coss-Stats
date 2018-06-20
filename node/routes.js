@@ -211,9 +211,8 @@ app.post("/send-feedback", function(req, res){
   var ip = req.headers["x-real-ip"];
 
   if(ip === undefined || ip === null){
-    ip = "1.2.3.4";
-    // res.json({"msg":"Bad IP address", "err":"false"});
-    // return;
+    res.json({"msg":"Bad IP address", "err":"false"});
+    return;
   }
 
   var sql  = "SELECT date FROM feedback_ip WHERE ip=?";
