@@ -56,6 +56,10 @@ table {border-collapse: collapse;}
   .page-button:active {
     background-color: darkgray;
   }
+
+  .page-button[current-page] {
+    background-color: #36c6dc;
+  }
 }
 
 .volume-history table {
