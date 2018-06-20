@@ -1,4 +1,5 @@
 var app        = require("../server.js");
+var log        = require("./log.js");
 var fs         = require("fs");
 var mysql      = require("mysql");
 var moment     = require("moment");
@@ -210,29 +211,20 @@ app.post("/send-feedback", function(req, res){
   var ip = req.headers["x-real-ip"];
 
   if(ip === undefined || ip === null){
-    res.json({"msg":"Bad IP address", "err":"false"});
-    return;
+    ip = "1.2.3.4";
+    // res.json({"msg":"Bad IP address", "err":"false"});
+    // return;
   }
 
   var sql  = "SELECT date FROM feedback_ip WHERE ip=?";
   var args = [ip];
 
   db.query(sql, args, function(err, rows){
-    console.log(rows.length);
     if(rows.length == 0){
-      console.log("This person has never left feedback before, insert a new row");
-
       var sql  = "INSERT INTO feedback_ip (ip) VALUES (?)";
       var args = [ip];
 
       db.query(sql, args, function(err, rows){
-        console.log("The row has been inserted");
-        // console.log(err);
-        // console.log("--------------------");
-        // console.log(rows);
-        // console.log("--------------------");
-
-
         var message     = req["body"]["message"];
         var username    = app["data"]["email"]["username"];
         var password    = app["data"]["email"]["password"];
@@ -253,13 +245,17 @@ app.post("/send-feedback", function(req, res){
           "text"   : message
         };
 
-        transporter.sendMail(mailOptions, function(error, info){
-          res.json({"msg":"Message sent", "err":"false"});
+        // It isn't necessary to wait for a response from the transporter, so we can send a json response to the user now
+        res.json({"msg":"Message sent", "err":"false"});
+
+        log.Write(`Feedback sent: ${ip}`);
+
+        transporter.sendMail(mailOptions, function(err, info){
+          if(err) log.Write(err);
           return;
         });
       });
     }else{
-      console.log("This person HAS left feedback; check for 24 hours");
       var then      = rows[0]["date"];
       var countdown = moment.duration(moment(moment()).diff(then));
 
@@ -268,12 +264,10 @@ app.post("/send-feedback", function(req, res){
         var args = [ip];
 
         db.query(sql, args, function(err, rows){
-          console.log("YES");
           res.json({"msg":"Message sent", "err":"false"});
           return;
         });
       }else{
-        console.log("NO");
         res.json({"msg":"You must wait at least 24 hours before sending another email", "err":"false"});
         return;
       }
