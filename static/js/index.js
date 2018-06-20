@@ -13,9 +13,11 @@ function Start(){
   if(localStorage.getItem("page") !== null){
     var page = localStorage.getItem("page");
     $(`.page[page=${page}]`).css("display", "block");
+    $(`.page-button[page=${page}]`).attr("current-page", "");
   }else{
     var page = "volume-tracker";
     $(`.page[page=${page}]`).css("display", "block");
+    $(`.page-button[page=${page}]`).attr("current-page", "");
     localStorage.setItem("page", page);
   }
 
@@ -290,6 +292,8 @@ $(".page-button").click(function(){
   var page = $(this).attr("page");
   $(".page[page]").css("display", "none");
   $(`.page[page=${page}]`).css("display", "block");
+  $(".page-button").removeAttr("current-page");
+  $(`.page-button[page=${page}]`).attr("current-page", "");
   localStorage.setItem("page", page);
 });
 
@@ -346,7 +350,7 @@ $(".dropzone").on({
 $(".delete").click(DeleteFsaData);
 
 $(".feedback .submit").click(function(){
-  var message = $(".feedback .textarea").val();
+  var message = $(".feedback .textarea textarea").val();
 
   $.post("send-feedback", {"message":message}, function(res){
     console.log(res["msg"]);
