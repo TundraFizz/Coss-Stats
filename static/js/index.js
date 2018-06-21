@@ -135,7 +135,7 @@ $(".fsa-calculator .submit").click(function(){
     var self = data[i];
     var val  = $(self).val().trim();
 
-    // Encapsulate self and val because of the delayed funcation inside
+    // Encapsulate self and val because of the delayed function inside
     (function(self, val){
       // If the element isn't animated, animate a glowing red border over the invalid field
       if((isNaN(val) || !val) && !$(self).is(":animated")){
@@ -222,7 +222,7 @@ $(".coss-price-calculator .submit").click(function(){
     var self = data[i];
     var val  = $(self).val().trim();
 
-    // Encapsulate self and val because of the delayed funcation inside
+    // Encapsulate self and val because of the delayed function inside
     (function(self, val){
       // If the element isn't animated, animate a glowing red border over the invalid field
       if((isNaN(val) || !val) && !$(self).is(":animated")){
@@ -274,7 +274,7 @@ $(".coss-price-calculator .submit").click(function(){
   // Multiply this by 52 to see how much 1 coss will generate in a year
   var yearlyPayoutFromOneCoss = userFeePayout * 52;
 
-  var adjustedForRoi = yearlyPayoutFromOneCoss / expectedRoi;
+  var adjustedForRoi = (yearlyPayoutFromOneCoss * expectedRoi).toFixed(2);
 
   // Example:
   // Daily volume:  10 million
@@ -353,9 +353,31 @@ $(".feedback .submit").click(function(){
   var message = $(".feedback .textarea textarea").val();
 
   $.post("send-feedback", {"message":message}, function(res){
-    alert(res["msg"]);
-    if(res["msg"] == "Message sent")
+    if(res["err"] == "false"){
       $(".feedback .textarea textarea").val("");
+      $(".feedback .response").css("border-color", "#006b00");
+      $(".feedback .response").css("background-color", "#00ce00");
+    }else if(res["err"] == "true"){
+      $(".feedback .response").css("border-color", "#6b0000");
+      $(".feedback .response").css("background-color", "#ff7070");
+    }
+
+    $(".feedback .response").css("display", "inline-block");
+    $(".feedback .response").text(res["msg"]);
+
+    $(".feedback .response").animate({
+      "opacity": "1"
+    }, 300, "easeInQuad");
+  });
+});
+
+$(".feedback .response").click(function(){
+  var self = this;
+
+  $(self).animate({
+    "opacity": "0"
+  }, 300, "easeOutQuad", function(){
+    $(self).css("display", "none");
   });
 });
 
