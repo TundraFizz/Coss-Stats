@@ -33,10 +33,11 @@ function UpdateCrypto(){
     }
 
     if(rows.length == 0){
-      log.Log("No entries exist, trying again in five seconds");
+      log.Write("No entries exist, trying again in five seconds");
       lock = false;
       return;
     }else if(index == rows.length){
+      log.Write("Setting the index to ZERO");
       index = 0;
     }
 
@@ -45,12 +46,15 @@ function UpdateCrypto(){
     var symbolCmc  = rows[index]["symbol_cmc"];
     var symbolCoss = rows[index]["symbol_coss"];
 
+    log.Write(`Updating value at ID: ${id}`);
+
     request("https://api.coinmarketcap.com/v2/listings/", {"json":"true"}, function(err, res, obj){
       if(err){
         log.Write(err);
         return;
       }
 
+      log.Write(JSON.stringify(obj));
       var data  = obj["data"];
       var tests = 0;
 
@@ -65,11 +69,17 @@ function UpdateCrypto(){
               return;
             }
 
+            log.Write(JSON.stringify(obj));
             var value = obj["data"]["quotes"]["USD"]["price"];
             var sql   = "UPDATE value SET value=? WHERE id=?";
             var args  = [value, id];
 
             db.query(sql, args, function(err, rows){
+              if(err){
+                log.Write(err);
+                return;
+              }
+
               index++;
               lock = false;
               return;
