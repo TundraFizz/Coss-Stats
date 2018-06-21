@@ -65,8 +65,20 @@ function GetNextEthBlock(){return new Promise((done) => {
   });
 })}
 
+function LogAccess(ip){
+  if(typeof ip == "undefined") ip = "testing";
+  db.query("SELECT hits FROM access_log WHERE ip=?", [ip], function(err, rows){
+    if(rows.length == 0){
+      db.query("INSERT INTO access_log (ip, hits, last_seen) VALUES (?, 1, NOW())", [ip]);
+    }else{
+      db.query("UPDATE access_log SET hits=?, last_seen=NOW() WHERE ip=?", [rows[0]["hits"] + 1, ip]);
+    }
+  });
+}
+
 app.get("/", function(req, res){
   var data = {};
+  LogAccess(req.headers["x-real-ip"]);
 
   GetCossValue()
   .then((r) => {
