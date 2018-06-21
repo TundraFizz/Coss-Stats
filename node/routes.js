@@ -66,7 +66,7 @@ function GetNextEthBlock(){return new Promise((done) => {
 })}
 
 function LogAccess(ip){
-  if(typeof ip == "undefined") ip = "testing";
+  if(ip === undefined) ip = "testing";
   db.query("SELECT hits FROM access_log WHERE ip=?", [ip], function(err, rows){
     if(rows.length == 0){
       db.query("INSERT INTO access_log (ip, hits, last_seen) VALUES (?, 1, NOW())", [ip]);
@@ -223,8 +223,9 @@ app.post("/send-feedback", function(req, res){
   var ip = req.headers["x-real-ip"];
 
   if(ip === undefined || ip === null){
-    res.json({"msg":"Bad IP address", "err":"false"});
-    return;
+    ip = "1.2.3.4";
+    // res.json({"msg":"Bad IP address", "err":"false"});
+    // return;
   }
 
   var sql  = "SELECT date FROM feedback_ip WHERE ip=?";
@@ -279,7 +280,7 @@ app.post("/send-feedback", function(req, res){
           return;
         });
       }else{
-        res.json({"msg":"You must wait at least 24 hours before sending another email", "err":"false"});
+        res.json({"msg":"You must wait at least 24 hours before sending another email", "err":"true"});
         return;
       }
     }
