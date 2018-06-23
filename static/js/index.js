@@ -21,12 +21,13 @@ function Start(){
     localStorage.setItem("page", page);
   }
 
-  if(localStorage.getItem("fsa-coss-held")       !== null) $("#fsa-coss-held"      ).val(localStorage.getItem("fsa-coss-held"      ));
-  if(localStorage.getItem("fsa-volume")          !== null) $("#fsa-volume"         ).val(localStorage.getItem("fsa-volume"         ));
-  if(localStorage.getItem("fsa-fee-percentage")  !== null) $("#fsa-fee-percentage" ).val(localStorage.getItem("fsa-fee-percentage" ));
-  if(localStorage.getItem("coss-expected-roi")   !== null) $("#coss-expected-roi"  ).val(localStorage.getItem("coss-expected-roi"  ));
-  if(localStorage.getItem("coss-volume")         !== null) $("#coss-volume"        ).val(localStorage.getItem("coss-volume"        ));
-  if(localStorage.getItem("coss-fee-percentage") !== null) $("#coss-fee-percentage").val(localStorage.getItem("coss-fee-percentage"));
+  if(localStorage.getItem("fsa-coss-held")         !== null) $("#fsa-coss-held"        ).val(localStorage.getItem("fsa-coss-held"        ));
+  if(localStorage.getItem("fsa-volume")            !== null) $("#fsa-volume"           ).val(localStorage.getItem("fsa-volume"           ));
+  if(localStorage.getItem("fsa-fee-percentage")    !== null) $("#fsa-fee-percentage"   ).val(localStorage.getItem("fsa-fee-percentage"   ));
+  if(localStorage.getItem("fsa-average-buy-price") !== null) $("#fsa-average-buy-price").val(localStorage.getItem("fsa-average-buy-price"));
+  if(localStorage.getItem("coss-expected-roi")     !== null) $("#coss-expected-roi"    ).val(localStorage.getItem("coss-expected-roi"    ));
+  if(localStorage.getItem("coss-volume")           !== null) $("#coss-volume"          ).val(localStorage.getItem("coss-volume"          ));
+  if(localStorage.getItem("coss-fee-percentage")   !== null) $("#coss-fee-percentage"  ).val(localStorage.getItem("coss-fee-percentage"  ));
 
   // Investigate this
   $.event.props.push("dataTransfer");
@@ -180,9 +181,10 @@ $(".fsa-calculator .submit").click(function(){
   // Divide by the coss in circulation to find out how much 1 coss will get you in USD per week
   userFeePayout /= cossInCirculation;
 
-  var weeklyIncome   = (userFeePayout * cossHeld).toFixed(2);
-  var monthlyIncome  = (weeklyIncome * 4).toFixed(2);
-  var yearlyIncome   = (weeklyIncome * 52).toFixed(2);
+  var weeklyIncome   = (userFeePayout * cossHeld);
+  var yearlyIncome   = (weeklyIncome  * 52).toFixed(2);
+  var monthlyIncome  = (weeklyIncome  * 4).toFixed(2);
+      weeklyIncome   = (weeklyIncome).toFixed(2);
   var totalCossWorth = (cossHeld * cossValue).toFixed(2);
 
   console.log("==========================================");
@@ -207,6 +209,21 @@ $(".fsa-calculator .submit").click(function(){
   $($(".fsa-calculator .fsa-monthly")[0]).text(monthlyIncome);
   $($(".fsa-calculator .fsa-yearly")[0]).text(yearlyIncome);
   $($(".fsa-calculator .total-coss-worth")[0]).text(totalCossWorth);
+
+  var averageBuyPrice = $($("#fsa-average-buy-price")[0]).val();
+
+  if(isNaN(averageBuyPrice))
+    return;
+
+  var yearlyPayoutFromOneCoss = userFeePayout * 52;
+
+  var calculatedRoi = (yearlyPayoutFromOneCoss / averageBuyPrice) * 100;
+  calculatedRoi = calculatedRoi.toFixed(0);
+
+  $($(".calculated-roi")[0]).text(calculatedRoi);
+
+  // $1.82 yearly for holding one COSS at $1 billion DV at 0.1% fee%
+  // average buy price: $0.455 => 400% ROI
 });
 
 $(".coss-price-calculator .submit").click(function(){
