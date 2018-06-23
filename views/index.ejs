@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="description"  content="COSS Statistics">
     <meta name="author"       content="Tundra Fizz">
-    <link rel="shortcut icon" href="/img/icon.jpg">
+    <link rel="shortcut icon" href="/img/icon.png">
     <link rel="stylesheet"    href="/css/theme.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -93,8 +93,6 @@
 
     <div class="page" page="calculators" style="display: none;">
       <div class="container">
-        <!-- average buy price -->
-        <!-- Do the above for this calculator -->
         <div class="fsa-calculator">
           <table>
             <thead></thead>
@@ -110,6 +108,10 @@
               <tr>
                 <td>Average fee %</td>
                 <td><input id="fsa-fee-percentage" type="text"></td>
+              </tr>
+              <tr>
+                <td>Average buy price</td>
+                <td><input id="fsa-average-buy-price" type="text" value="optional"></td>
               </tr>
               <tr>
                 <td colspan="2"><div class="submit">Calculate</div></td>
@@ -134,6 +136,10 @@
               <tr>
                 <td>Total COSS worth</td>
                 <td class="total-coss-worth"></td>
+              </tr>
+              <tr>
+                <td>Calculated ROI%</td>
+                <td class="calculated-roi"></td>
               </tr>
             </tbody>
           </table>
