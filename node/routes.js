@@ -289,5 +289,4 @@ app.post("/send-feedback", function(req, res){
 
 app.use(function (req, res){
   res.redirect("/");
-  // res.render("404.ejs");
 });
