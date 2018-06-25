@@ -114,7 +114,7 @@ function WeeklyRewards(){
 
     html += `
     <tr>
-      <td><a href="https://etherscan.io/block/${weeklyRewards[i]['date']}" target="_blank">${weeklyRewards[i]["ethBlock"]}<span class="aaa"></span></a></td>
+      <td><a href="https://etherscan.io/block/${weeklyRewards[i]['ethBlock']}" target="_blank">${weeklyRewards[i]["ethBlock"]}<span class="aaa"></span></a></td>
       <td>${date}</td>
       <td>${weeklyRewards[i]["volume"]}</td>
       <td>${weeklyRewards[i]["value"]}</td>
