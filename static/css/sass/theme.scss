@@ -260,12 +260,11 @@ table {border-collapse: collapse;}
     }
 
     &.outputs-fsa-amount {
-      width: 100%;
+      min-width: 350px;
       text-align: center;
       border: 1px solid black;
 
       tr:first-child {
-        column-span: 3;
         border-bottom: 1px solid black;
       }
 
@@ -276,7 +275,7 @@ table {border-collapse: collapse;}
     }
 
     &.outputs-coss-value {
-      width: 100%;
+      min-width: 350px;
       text-align: center;
       border: 1px solid black;
 
@@ -287,7 +286,7 @@ table {border-collapse: collapse;}
     }
 
     &.outputs-estimated-price {
-      width: 100%;
+      min-width: 350px;
       text-align: center;
       border: 1px solid black;
     }
@@ -313,6 +312,32 @@ table {border-collapse: collapse;}
 
   .submit:active {
     background-color: darkgray;
+  }
+
+  .math {
+    display: none;
+
+    .totals, .explanations {
+      display: none;
+      max-width: 600px;
+      margin: 0 auto;
+      border: 1px solid black;
+      padding: 4px;
+    }
+
+    .totals {
+      div {
+        cursor: pointer;
+      }
+    }
+
+    .explanations {
+      margin-top: 10px;
+
+      div {
+        display: none;
+      }
+    }
   }
 }
 
