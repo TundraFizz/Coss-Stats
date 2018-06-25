@@ -65,6 +65,22 @@ function GetNextEthBlock(){return new Promise((done) => {
   });
 })}
 
+function GetFaq(){return new Promise((done) => {
+  var sql = "SELECT question, answer FROM faq";
+  var faq = [];
+
+  db.query(sql, function(err, rows){
+    for(r in rows){
+      faq.push({
+        "question": rows[r]["question"],
+        "answer"  : rows[r]["answer"]
+      });
+    }
+
+    done(faq);
+  });
+})}
+
 function LogAccess(ip){
   if(ip === undefined) ip = "testing";
   db.query("SELECT hits FROM access_log WHERE ip=?", [ip], function(err, rows){
@@ -96,7 +112,12 @@ app.get("/", function(req, res){
         .then((r) => {
           data["nextEthBlock"] = r;
 
-          res.render("index.ejs", data);
+          GetFaq()
+          .then((r) => {
+            data["faq"] = r;
+
+            res.render("index.ejs", data);
+          });
         });
       });
     });
