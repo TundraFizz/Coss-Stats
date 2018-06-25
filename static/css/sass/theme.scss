@@ -20,7 +20,6 @@ body {
 table {border-collapse: collapse;}
 
 .container {
-  width: 100%;
   margin: 10px 8px;
 }
 
@@ -248,69 +247,72 @@ table {border-collapse: collapse;}
   }
 }
 
-.calc-page table {
-  margin-top: 10px;
+.calc-page {
+  table {
+    margin-top: 10px;
 
-  tr {
-    height: 24px;
-  }
+    tr {
+      height: 24px;
+    }
 
-  input {
-    border: 1px solid transparent;
-  }
+    input {
+      border: 1px solid transparent;
+    }
 
-  &.inputs tr:last-child {
-    text-align: center;
-
-    .submit {
-      display: inline-block;
-      padding: 2px;
-      border-radius: 6px;
+    &.outputs-fsa-amount {
+      width: 100%;
+      text-align: center;
       border: 1px solid black;
-      background-color: #c5c5c5;
-      cursor: pointer;
 
-      -moz-user-select: none;
-      -khtml-user-select: none;
-      -webkit-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+      tr:first-child {
+        column-span: 3;
+        border-bottom: 1px solid black;
+      }
+
+      td {
+        width: 33.33%;
+        border-right: 1px solid black;
+      }
     }
 
-    .submit:hover {
-      background-color: #cccccc;
+    &.outputs-coss-value {
+      width: 100%;
+      text-align: center;
+      border: 1px solid black;
+
+      td {
+        width: 50%;
+        border-right: 1px solid black;
+      }
     }
 
-    .submit:active {
-      background-color: darkgray;
-    }
-  }
-
-  &.outputs-fsa-amount {
-    width: 100%;
-    text-align: center;
-    border: 1px solid black;
-
-    tr:first-child {
-      column-span: 3;
-      border-bottom: 1px solid black;
-    }
-
-    td {
-      width: 33.33%;
-      border-right: 1px solid black;
+    &.outputs-estimated-price {
+      width: 100%;
+      text-align: center;
+      border: 1px solid black;
     }
   }
 
-  &.outputs-coss-value {
-    width: 100%;
-    text-align: center;
+  .submit {
+    padding: 2px;
+    border-radius: 6px;
     border: 1px solid black;
+    background-color: #c5c5c5;
+    cursor: pointer;
 
-    td {
-      width: 50%;
-      border-right: 1px solid black;
-    }
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .submit:hover {
+    background-color: #cccccc;
+  }
+
+  .submit:active {
+    background-color: darkgray;
   }
 }
 
@@ -388,6 +390,21 @@ table {border-collapse: collapse;}
 .val-total,
 .val-transferred {
   display: none;
+}
+
+.faq {
+  .q-and-a {
+    margin: 16px 0px;
+    text-align: center;
+
+    span {
+      font-weight: bold;
+    }
+
+    .q, .a {
+      margin: 4px 0px;
+    }
+  }
 }
 
 .feedback {
