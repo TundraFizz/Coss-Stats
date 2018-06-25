@@ -54,7 +54,7 @@ function UpdateCrypto(){
         return;
       }
 
-      log.Write(JSON.stringify(obj));
+      // log.Write(JSON.stringify(obj));
       var data  = obj["data"];
       var tests = 0;
 
@@ -69,7 +69,7 @@ function UpdateCrypto(){
               return;
             }
 
-            log.Write(JSON.stringify(obj));
+            // log.Write(JSON.stringify(obj));
             var value = obj["data"]["quotes"]["USD"]["price"];
             var sql   = "UPDATE value SET value=? WHERE id=?";
             var args  = [value, id];
