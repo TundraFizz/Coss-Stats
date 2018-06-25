@@ -40,7 +40,10 @@ function Start(){
   if(localStorage.getItem("coss-volume")           !== null) $("#coss-volume"          ).val(localStorage.getItem("coss-volume"          ));
   if(localStorage.getItem("coss-fee-percentage")   !== null) $("#coss-fee-percentage"  ).val(localStorage.getItem("coss-fee-percentage"  ));
 
-  if(localStorage.getItem("show-math")             !== null) $(".show-math .button"    ).attr("on", "");
+  if(localStorage.getItem("show-math") !== null){
+    $(".show-math .button").attr("on", "");
+    $(".math").css("display", "table");
+  }
 
   // Investigate this
   $.event.props.push("dataTransfer");
@@ -179,38 +182,40 @@ $(".fsa-calculator .submit").click(function(){
   var feePercentage = data["feePercentage"] / 100;
   var weeklyVolume  = volume * 7;
 
-  // Multiply weekly volume by average fee% to get the amount in millions
-  var totalFeePayout = weeklyVolume * feePercentage;
+  $(".calc-page .totals").css("display", "table");
+  $($(".calc-page .totals       .weekly-volume-total")[0]).text(`Total weekly volume (millions): ${weeklyVolume}`);
+  $($(".calc-page .explanations .weekly-volume-total")[0]).text(`${weeklyVolume} = ${volume} * 7 | The weekly volume, which is daily volume multiplied by seven`);
 
-  // Multiply the result by 1,000,000 to get the actual value
-  totalFeePayout *= 1000000;
+  // The COSS exchange gets half of the volume
+  weeklyVolume /= 2;
 
-  // The COSS exchange gets half of the total fee payout
-  userFeePayout = totalFeePayout / 2;
+  $($(".calc-page .totals       .weekly-volume-community")[0]).text(`Community weekly volume (millions): ${weeklyVolume}`);
+  $($(".calc-page .explanations .weekly-volume-community")[0]).text(`${weeklyVolume} = ${weeklyVolume*2} / 2 | Half of the total weekly volume because the COSS exchange gets half, while the other half goes to the community that holds the COSS tokens`);
+
+  // Multiply weekly volume by average fee% to get the community's payout
+  var communityPayout = weeklyVolume * feePercentage;
+
+  $($(".calc-page .totals       .community-payout")[0]).text(`Community payout: ${communityPayout}m`);
+  $($(".calc-page .explanations .community-payout")[0]).text(`${communityPayout}m = ${weeklyVolume}m * ${feePercentage} | The community's total payout is their volume * fee%`);
+
+  var communityPayoutM = communityPayout;
+  // Expand from "millions" notation to the actual value
+  communityPayout *= 1000000;
 
   // There is about 100,000,000 (100 million) COSS in circulation
   var cossInCirculation = 100000000;
 
   // Divide by the coss in circulation to find out how much 1 coss will get you in USD per week
-  userFeePayout /= cossInCirculation;
+  communityPayout /= cossInCirculation;
 
-  var weeklyIncome   = (userFeePayout * cossHeld);
+  $($(".calc-page .totals       .one-coss-income")[0]).text(`1 COSS Income: ${communityPayout}`);
+  $($(".calc-page .explanations .one-coss-income")[0]).text(`${communityPayout} = ${communityPayoutM}m / ${cossInCirculation} | This is how much income one COSS token generates. Divide the community's payout by the number of COSS tokens in circulation (100,000,000)`);
+
+  var weeklyIncome   = (communityPayout * cossHeld);
   var yearlyIncome   = (weeklyIncome  * 52).toFixed(2);
   var monthlyIncome  = (weeklyIncome  * 4).toFixed(2);
       weeklyIncome   = (weeklyIncome).toFixed(2);
   var totalCossWorth = (cossHeld * cossValue).toFixed(2);
-
-  // console.log("==========================================");
-  // console.log("coss held:", cossHeld);
-  // console.log("fee %    :", feePercentage);
-  // console.log("d volume :", volume);
-  // console.log("w volume :", weeklyVolume);
-  // console.log("payout 1 :", totalFeePayout);
-  // console.log("coss cir :", cossInCirculation);
-  // console.log("payout 2 :", userFeePayout);
-  // console.log("w income :", weeklyIncome);
-  // console.log("m income :", monthlyIncome);
-  // console.log("y income :", yearlyIncome);
 
   $($(".fsa-calculator .fsa-weekly")[0]).text(weeklyIncome);
   $($(".fsa-calculator .fsa-monthly")[0]).text(monthlyIncome);
@@ -224,15 +229,12 @@ $(".fsa-calculator .submit").click(function(){
     return;
   }
 
-  var yearlyPayoutFromOneCoss = userFeePayout * 52;
+  var yearlyPayoutFromOneCoss = communityPayout * 52;
 
   var calculatedRoi = (yearlyPayoutFromOneCoss / averageBuyPrice) * 100;
   calculatedRoi = calculatedRoi.toFixed(0);
 
   $($(".calculated-roi")[0]).text(calculatedRoi);
-
-  // $1.82 yearly for holding one COSS at $1 billion DV at 0.1% fee%
-  // average buy price: $0.455 => 400% ROI
 });
 
 $(".coss-price-calculator .submit").click(function(){
@@ -314,6 +316,16 @@ $(".coss-price-calculator .submit").click(function(){
   $($(".coss-price-calculator .estimated-price")[0]).text(adjustedForRoi);
 });
 
+$(".math .totals div").hover(function(){
+  var c = $(this).attr("class");
+  $(".explanations").css("display", "block");
+  $(`.explanations div[class="${c}"]`).css("display", "block");
+}, function(){
+  var c = $(this).attr("class");
+  $(".explanations").css("display", "none");
+  $(`.explanations div[class="${c}"]`).css("display", "none");
+});
+
 $(".page-button").click(function(){
   var key  = $(this).attr("key");
   var page = $(this).attr(key);
@@ -338,11 +350,13 @@ $(".show-math .button").click(function(){
     // If the button is not on (undefined), turn it on
     localStorage.setItem("show-math", "on");
     $(this).attr("on", "");
+    $(".math").css("display", "table");
   }
   else{
     // Otherwise turn it off
     localStorage.removeItem("show-math");
     $(this).removeAttr("on");
+    $(".math").css("display", "none");
   }
 });
 
