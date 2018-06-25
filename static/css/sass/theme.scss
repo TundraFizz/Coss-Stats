@@ -393,6 +393,8 @@ table {border-collapse: collapse;}
 }
 
 .faq {
+  max-width: 650px;
+
   .q-and-a {
     margin: 16px 0px;
     text-align: center;
@@ -402,8 +404,12 @@ table {border-collapse: collapse;}
     }
 
     .q, .a {
-      margin: 4px 0px;
+      margin-bottom: 4px;
     }
+
+    &:first-child {
+      margin-top: 0;
+    };
   }
 }
 
