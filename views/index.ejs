@@ -112,60 +112,67 @@
       <div class="calc-page" calc-page="calc-fsa" style="display: none;">
         <div class="container">
           <div class="fsa-calculator">
-            <table class="inputs">
-              <thead></thead>
-              <tbody>
-                <tr>
-                  <td>COSS held</td>
-                  <td><input id="fsa-coss-held" type="text"></td>
-                </tr>
-                <tr>
-                  <td>Daily volume ($million)</td>
-                  <td><input id="fsa-volume" type="text"></td>
-                </tr>
-                <tr>
-                  <td>Average fee %</td>
-                  <td><input id="fsa-fee-percentage" type="text"></td>
-                </tr>
-                <tr>
-                  <td>Average buy price</td>
-                  <td><input id="fsa-average-buy-price" type="text" value="optional"></td>
-                </tr>
-                <tr>
-                  <td colspan="2"><div class="submit">Calculate</div></td>
-                </tr>
-              </tbody>
-            </table>
-            <table class="outputs-fsa-amount">
-              <thead></thead>
-              <tbody>
-                <tr>
-                  <td colspan="3">FSA Amount</td>
-                </tr>
-                <tr>
-                  <td>Weekly</td>
-                  <td>Monthly</td>
-                  <td>Yearly</td>
-                </tr>
-                <tr>
-                  <td class="fsa-weekly">-----</td>
-                  <td class="fsa-monthly">-----</td>
-                  <td class="fsa-yearly">-----</td>
-                </tr>
-              </tbody>
-            <table class="outputs-coss-value">
-              <thead></thead>
-              <tbody>
-                <tr>
-                  <td>Total COSS Value</td>
-                  <td>Calculated ROI%</td>
-                </tr>
-                <tr>
-                  <td class="total-coss-value">-----</td>
-                  <td class="calculated-roi">-----</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="container">
+              <table class="inputs">
+                <thead></thead>
+                <tbody>
+                  <tr>
+                    <td>COSS held</td>
+                    <td><input id="fsa-coss-held" type="text"></td>
+                  </tr>
+                  <tr>
+                    <td>Daily volume ($million)</td>
+                    <td><input id="fsa-volume" type="text"></td>
+                  </tr>
+                  <tr>
+                    <td>Average fee %</td>
+                    <td><input id="fsa-fee-percentage" type="text"></td>
+                  </tr>
+                  <tr>
+                    <td>Average buy price</td>
+                    <td><input id="fsa-average-buy-price" type="text" value="optional"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="container">
+              <div class="submit">Calculate</div>
+            </div>
+            <div class="container">
+              <table class="outputs-fsa-amount">
+                <thead></thead>
+                <tbody>
+                  <tr>
+                    <td colspan="3">FSA Amount</td>
+                  </tr>
+                  <tr>
+                    <td>Weekly</td>
+                    <td>Monthly</td>
+                    <td>Yearly</td>
+                  </tr>
+                  <tr>
+                    <td class="fsa-weekly">-----</td>
+                    <td class="fsa-monthly">-----</td>
+                    <td class="fsa-yearly">-----</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="container">
+              <table class="outputs-coss-value">
+                <thead></thead>
+                <tbody>
+                  <tr>
+                    <td>Total COSS Value</td>
+                    <td>Calculated ROI%</td>
+                  </tr>
+                  <tr>
+                    <td class="total-coss-value">-----</td>
+                    <td class="calculated-roi">-----</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -173,36 +180,42 @@
       <div class="calc-page" calc-page="calc-coss-worth" style="display: none;">
         <div class="container">
           <div class="coss-price-calculator">
-            <table class="inputs">
-              <thead></thead>
-              <tbody>
-                <tr>
-                  <td>Expected yearly ROI%</td>
-                  <td><input id="coss-expected-roi" type="text"></td>
-                </tr>
-                <tr>
-                  <td>Daily volume ($million)</td>
-                  <td><input id="coss-volume" type="text"></td>
-                </tr>
-                <tr>
-                  <td>Average fee %</td>
-                  <td><input id="coss-fee-percentage" type="text"></td>
-                </tr>
-                <tr><!-- Empty row to match row count with the other table: fsa-calculator --></tr>
-                <tr>
-                  <td colspan="2"><div class="submit">Calculate</div></td>
-                </tr>
-              </tbody>
-            </table>
-            <table class="outputs">
-              <thead></thead>
-              <tbody>
-                <tr>
-                  <td>Estimated price</td>
-                  <td class="estimated-price"></td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="container">
+              <table class="inputs">
+                <thead></thead>
+                <tbody>
+                  <tr>
+                    <td>Expected yearly ROI%</td>
+                    <td><input id="coss-expected-roi" type="text"></td>
+                  </tr>
+                  <tr>
+                    <td>Daily volume ($million)</td>
+                    <td><input id="coss-volume" type="text"></td>
+                  </tr>
+                  <tr>
+                    <td>Average fee %</td>
+                    <td><input id="coss-fee-percentage" type="text"></td>
+                  </tr>
+                  <tr><!-- Empty row to match row count with the other table: fsa-calculator --></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="container">
+              <div class="submit">Calculate</div>
+            </div>
+            <div class="container">
+              <table class="outputs-estimated-price">
+                <thead></thead>
+                <tbody>
+                  <tr>
+                    <td>Estimated price</td>
+                  </tr>
+                  <tr>
+                    <td class="estimated-price">-----</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -254,9 +267,12 @@
     <div class="page" page="faq" style="display: none;">
       <div class="container">
         <div class="faq">
-          <div class="item">Placeholder</div>
-          <div class="item">Placeholder</div>
-          <div class="item">Placeholder</div>
+          <% for(var i = 0; i < faq.length; i++){ %>
+            <div class="q-and-a">
+              <div class="q"><span>Q:</span> <%= faq[i]["question"] %></div>
+              <div class="a"><span>A:</span> <%= faq[i]["answer"]   %></div>
+            </div>
+          <% } %>
         </div>
       </div>
     </div>
