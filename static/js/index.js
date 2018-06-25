@@ -200,23 +200,17 @@ $(".fsa-calculator .submit").click(function(){
       weeklyIncome   = (weeklyIncome).toFixed(2);
   var totalCossWorth = (cossHeld * cossValue).toFixed(2);
 
-  console.log("==========================================");
-  console.log("coss held:", cossHeld);
-  console.log("fee %    :", feePercentage);
-  console.log("d volume :", volume);
-  console.log("w volume :", weeklyVolume);
-  console.log("payout 1 :", totalFeePayout);
-  console.log("coss cir :", cossInCirculation);
-  console.log("payout 2 :", userFeePayout);
-  console.log("w income :", weeklyIncome);
-  console.log("m income :", monthlyIncome);
-  console.log("y income :", yearlyIncome);
-
-  // Daily volume: 2.4
-  // Average fee : 0.12
-
-  // payout per coss: 0.0001008
-  // w income       : 2.52
+  // console.log("==========================================");
+  // console.log("coss held:", cossHeld);
+  // console.log("fee %    :", feePercentage);
+  // console.log("d volume :", volume);
+  // console.log("w volume :", weeklyVolume);
+  // console.log("payout 1 :", totalFeePayout);
+  // console.log("coss cir :", cossInCirculation);
+  // console.log("payout 2 :", userFeePayout);
+  // console.log("w income :", weeklyIncome);
+  // console.log("m income :", monthlyIncome);
+  // console.log("y income :", yearlyIncome);
 
   $($(".fsa-calculator .fsa-weekly")[0]).text(weeklyIncome);
   $($(".fsa-calculator .fsa-monthly")[0]).text(monthlyIncome);
