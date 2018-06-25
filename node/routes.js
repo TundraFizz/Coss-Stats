@@ -233,7 +233,7 @@ app.post("/send-feedback", function(req, res){
 
   db.query(sql, args, function(err, rows){
     if(rows.length == 0){
-      var sql  = "INSERT INTO feedback_ip (ip) VALUES (?)";
+      var sql  = "INSERT INTO feedback_ip (ip, date) VALUES (?, NOW() + INTERVAL 1 DAY)";
       var args = [ip];
 
       db.query(sql, args, function(err, rows){
@@ -269,10 +269,10 @@ app.post("/send-feedback", function(req, res){
       });
     }else{
       var then      = rows[0]["date"];
-      var countdown = moment.duration(moment(moment()).diff(then));
+      var countdown = moment.duration(moment(then).diff(moment()));
 
-      if(countdown.days() > 0){
-        var sql  = "UPDATE feedback_ip SET date=NOW() WHERE ip=?";
+      if(countdown.hours() <= 0 && countdown.minutes() <= 0){
+        var sql  = "UPDATE feedback_ip SET date=NOW() + INTERVAL 1 DAY WHERE ip=?";
         var args = [ip];
 
         db.query(sql, args, function(err, rows){
@@ -280,7 +280,24 @@ app.post("/send-feedback", function(req, res){
           return;
         });
       }else{
-        res.json({"msg":"You must wait at least 24 hours before sending another email", "err":"true"});
+        var hours   = countdown.hours();
+        var minutes = countdown.minutes();
+        var and     = false;
+        var time    = "";
+
+        if(hours){
+          and = true;
+          if(hours == 1) time += "1 hour";
+          else           time += `${hours} hours`;
+        }
+
+        if(minutes){
+          if(and)          time += " and ";
+          if(minutes == 1) time += "1 minute";
+          else             time += `${minutes} minutes`;
+        }
+
+        res.json({"msg":`You must wait ${time} before sending another email`, "err":"true"});
         return;
       }
     }
