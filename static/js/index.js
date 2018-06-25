@@ -221,12 +221,12 @@ $(".fsa-calculator .submit").click(function(){
   $($(".fsa-calculator .fsa-weekly")[0]).text(weeklyIncome);
   $($(".fsa-calculator .fsa-monthly")[0]).text(monthlyIncome);
   $($(".fsa-calculator .fsa-yearly")[0]).text(yearlyIncome);
-  $($(".fsa-calculator .total-coss-worth")[0]).text(totalCossWorth);
+  $($(".fsa-calculator .total-coss-value")[0]).text(totalCossWorth);
 
   var averageBuyPrice = $($("#fsa-average-buy-price")[0]).val();
 
-  if(isNaN(averageBuyPrice)){
-    $($(".calculated-roi")[0]).text("");
+  if(isNaN(averageBuyPrice) || averageBuyPrice == 0){
+    $($(".calculated-roi")[0]).text("-----");
     return;
   }
 
