@@ -268,9 +268,10 @@
       <div class="container">
         <div class="faq">
           <% for(var i = 0; i < faq.length; i++){ %>
+            <% if(i!=0){ %><hr><% } %>
             <div class="q-and-a">
-              <div class="q"><span>Q:</span> <%= faq[i]["question"] %></div>
-              <div class="a"><span>A:</span> <%= faq[i]["answer"]   %></div>
+              <div class="q"><span>Q:</span> <%- faq[i]["question"] %></div>
+              <div class="a"><span>A:</span> <%- faq[i]["answer"]   %></div>
             </div>
           <% } %>
         </div>
