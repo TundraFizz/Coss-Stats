@@ -249,6 +249,7 @@ table {border-collapse: collapse;}
 }
 
 .calc-page table {
+  margin-top: 10px;
 
   tr {
     height: 24px;
@@ -282,6 +283,33 @@ table {border-collapse: collapse;}
 
     .submit:active {
       background-color: darkgray;
+    }
+  }
+
+  &.outputs-fsa-amount {
+    width: 100%;
+    text-align: center;
+    border: 1px solid black;
+
+    tr:first-child {
+      column-span: 3;
+      border-bottom: 1px solid black;
+    }
+
+    td {
+      width: 33.33%;
+      border-right: 1px solid black;
+    }
+  }
+
+  &.outputs-coss-value {
+    width: 100%;
+    text-align: center;
+    border: 1px solid black;
+
+    td {
+      width: 50%;
+      border-right: 1px solid black;
     }
   }
 }
