@@ -21,6 +21,17 @@ function Start(){
     localStorage.setItem("page", page);
   }
 
+  if(localStorage.getItem("calc-page") !== null){
+    var calcPage = localStorage.getItem("calc-page");
+    $(`.calc-page[calc-page=${calcPage}]`).css("display", "block");
+    $(`.page-button[calc-page=${calcPage}]`).attr("current-page", "");
+  }else{
+    var calcPage = "calc-fsa";
+    $(`.calc-page[calc-page=${calcPage}]`).css("display", "block");
+    $(`.page-button[calc-page=${calcPage}]`).attr("current-page", "");
+    localStorage.setItem("calc-fsa", calcPage);
+  }
+
   if(localStorage.getItem("fsa-coss-held")         !== null) $("#fsa-coss-held"        ).val(localStorage.getItem("fsa-coss-held"        ));
   if(localStorage.getItem("fsa-volume")            !== null) $("#fsa-volume"           ).val(localStorage.getItem("fsa-volume"           ));
   if(localStorage.getItem("fsa-fee-percentage")    !== null) $("#fsa-fee-percentage"   ).val(localStorage.getItem("fsa-fee-percentage"   ));
@@ -28,6 +39,8 @@ function Start(){
   if(localStorage.getItem("coss-expected-roi")     !== null) $("#coss-expected-roi"    ).val(localStorage.getItem("coss-expected-roi"    ));
   if(localStorage.getItem("coss-volume")           !== null) $("#coss-volume"          ).val(localStorage.getItem("coss-volume"          ));
   if(localStorage.getItem("coss-fee-percentage")   !== null) $("#coss-fee-percentage"  ).val(localStorage.getItem("coss-fee-percentage"  ));
+
+  if(localStorage.getItem("show-math")             !== null) $(".show-math .button"    ).attr("on", "");
 
   // Investigate this
   $.event.props.push("dataTransfer");
@@ -212,8 +225,10 @@ $(".fsa-calculator .submit").click(function(){
 
   var averageBuyPrice = $($("#fsa-average-buy-price")[0]).val();
 
-  if(isNaN(averageBuyPrice))
+  if(isNaN(averageBuyPrice)){
+    $($(".calculated-roi")[0]).text("");
     return;
+  }
 
   var yearlyPayoutFromOneCoss = userFeePayout * 52;
 
@@ -306,12 +321,35 @@ $(".coss-price-calculator .submit").click(function(){
 });
 
 $(".page-button").click(function(){
-  var page = $(this).attr("page");
-  $(".page[page]").css("display", "none");
-  $(`.page[page=${page}]`).css("display", "block");
-  $(".page-button").removeAttr("current-page");
-  $(`.page-button[page=${page}]`).attr("current-page", "");
-  localStorage.setItem("page", page);
+  var key  = $(this).attr("key");
+  var page = $(this).attr(key);
+
+  // Everything with the class of the key gets hidden
+  $(`.${key}`).css("display", "none");
+
+  // Show the content that belongs to the button that was pressed
+  $(`.${key}[${key}=${page}]`).css("display", "block");
+
+  // Remove current-page from all of the linked buttons
+  $(`[${key}]`).removeAttr("current-page");
+
+  // Set current-page to the button that was pressed
+  $(this).attr("current-page", "");
+
+  localStorage.setItem(key, page);
+});
+
+$(".show-math .button").click(function(){
+  if($(this).attr("on") == undefined){
+    // If the button is not on (undefined), turn it on
+    localStorage.setItem("show-math", "on");
+    $(this).attr("on", "");
+  }
+  else{
+    // Otherwise turn it off
+    localStorage.removeItem("show-math");
+    $(this).removeAttr("on");
+  }
 });
 
 $("input").bind("input", function(){
