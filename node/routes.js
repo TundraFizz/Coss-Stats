@@ -84,6 +84,11 @@ function GetFaq(){return new Promise((done) => {
 function LogAccess(ip){
   if(ip === undefined) ip = "testing";
   db.query("SELECT hits FROM access_log WHERE ip=?", [ip], function(err, rows){
+    if(err){
+      log.Write("=============== IT'S HAPPENING ===============");
+      log.Write(err);
+    }
+
     if(rows.length == 0){
       db.query("INSERT INTO access_log (ip, hits, last_seen) VALUES (?, 1, NOW())", [ip]);
     }else{
