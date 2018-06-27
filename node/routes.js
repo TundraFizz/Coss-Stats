@@ -6,7 +6,7 @@ var moment     = require("moment");
 var formidable = require("formidable");
 var emailer    = require("nodemailer");
 
-var db = mysql.createConnection({
+var db = mysql.createPool({
   "host"    : app["data"]["mysql"]["host"],
   "user"    : app["data"]["mysql"]["user"],
   "password": app["data"]["mysql"]["password"],
