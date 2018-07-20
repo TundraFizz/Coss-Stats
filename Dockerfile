@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY package.json .
 
 RUN apt-get update && \
-    npm install
+    npm install --production
 
 COPY . .
 
