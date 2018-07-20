@@ -1,11 +1,12 @@
 var fs         = require("fs");                   // File system
+var yaml       = require("js-yaml");              // Parse .yaml files
 var express    = require("express");              // Express
 var bodyParser = require("body-parser");          // Allows you to read POST data
 var sass       = require("node-sass-middleware"); // SASS
 var app        = module.exports = express();      // Define the application
 
-fs.readFile("secrets.json", "utf-8", function(err, data){
-  module.exports.data = JSON.parse(data);
+fs.readFile("config.yml", "utf-8", function(err, data){
+  module.exports.data = yaml.safeLoad(data);
 
   app.set("views", "./views");                      // Define the views directory
   app.use(express.static("./static"));              // Define the static directory
