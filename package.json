@@ -8,15 +8,18 @@
   "dependencies": {
     "express": "latest",
     "ejs": "latest",
+    "js-yaml": "latest",
     "node-sass-middleware": "latest",
     "body-parser": "latest",
     "formidable": "latest",
     "moment": "latest",
     "cheerio": "latest",
     "mysql": "latest",
-    "nodemon": "latest",
     "concurrently": "latest",
     "nodemailer": "latest"
+  },
+  "devDependencies": {
+    "nodemon": "latest"
   },
   "scripts": {
     "dev": "concurrently --kill-others \"nodemon server.js\" \"npm run build-css\"",
@@ -24,7 +27,6 @@
     "start": "node server.js",
     "build-css": "node-sass static/css/sass/theme.scss static/css/theme.css --output-style compressed -w static/css/sass/theme.scss"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/TundraFizz/Coss-Stats"
