@@ -1,0 +1,18 @@
+mysql:
+  # The host can be one of three options:
+  # 1. localhost
+  # 2. IP address of a remote server
+  # 3. Name of a MySQL Docker service
+  host: "localhost"
+  user: "root"
+  password: ""
+  database: "coss"
+
+email:
+  # Login credentials which will be used by the server
+  # to generate and send emails to my own email
+  username: "send_from_here@example.com"
+  password: ""
+
+  # The email account that the above will send to
+  sendEmailTo: "send_to_here@example.com"
