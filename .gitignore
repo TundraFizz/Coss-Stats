@@ -1,5 +1,4 @@
 node_modules
-secrets.json
 log.txt
 package-lock.json
 *.css
