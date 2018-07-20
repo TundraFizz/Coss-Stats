@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.1
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
--- Host: mysql:3306
--- Generation Time: Jun 19, 2018 at 04:12 AM
--- Server version: 8.0.11
--- PHP Version: 7.2.5
+-- Host: 127.0.0.1
+-- Generation Time: Jul 20, 2018 at 07:38 PM
+-- Server version: 10.1.29-MariaDB
+-- PHP Version: 7.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,295 +25,103 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `access_log`
+--
+
+CREATE TABLE `access_log` (
+  `id` int(11) NOT NULL,
+  `ip` varchar(15) COLLATE latin1_general_ci NOT NULL,
+  `hits` int(11) NOT NULL,
+  `last_seen` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+--
+-- Dumping data for table `access_log`
+--
+
+INSERT INTO `access_log` (`id`, `ip`, `hits`, `last_seen`) VALUES
+(1, '98.148.224.226', 62, '2018-06-25 06:29:14'),
+(3, '71.6.146.186', 2, '2018-06-21 08:15:35'),
+(4, '93.170.4.67', 1, '2018-06-21 15:05:45'),
+(5, '89.176.31.24', 2, '2018-06-21 15:06:01'),
+(6, '184.105.139.67', 1, '2018-06-21 15:09:07'),
+(7, '12.181.50.5', 332, '2018-06-25 20:24:10'),
+(8, '185.35.63.133', 1, '2018-06-21 18:43:40'),
+(9, '42.225.171.134', 1, '2018-06-21 20:50:28'),
+(10, '139.55.31.102', 1, '2018-06-21 20:54:28'),
+(11, '79.181.42.126', 1, '2018-06-21 21:19:52'),
+(12, '158.85.81.117', 1, '2018-06-22 12:48:10'),
+(13, '107.77.229.215', 1, '2018-06-22 18:55:56'),
+(14, '174.233.133.183', 1, '2018-06-22 21:10:30'),
+(15, '2.29.6.110', 1, '2018-06-22 23:34:36'),
+(16, '138.246.253.5', 1, '2018-06-23 00:11:24'),
+(17, '139.162.116.133', 1, '2018-06-23 07:13:25'),
+(18, '139.162.78.135', 1, '2018-06-23 11:46:09'),
+(19, '192.241.196.208', 1, '2018-06-23 22:33:50'),
+(20, '71.84.169.90', 1, '2018-06-24 01:14:24'),
+(21, '185.35.63.234', 1, '2018-06-25 02:13:38'),
+(22, 'testing', 116, '2018-06-28 09:32:49');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `faq`
+--
+
+CREATE TABLE `faq` (
+  `id` int(11) NOT NULL,
+  `question` text COLLATE latin1_general_ci NOT NULL,
+  `answer` text COLLATE latin1_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `faq`
+--
+
+INSERT INTO `faq` (`id`, `question`, `answer`) VALUES
+(1, 'Is this website affiliated with the official COSS website or company?', 'No, this is just a fan-made tool I wanted to make and sure with others.'),
+(2, 'How often will this website be updated?', 'Sporadically, whenever I find time to do so.'),
+(3, 'Why does the countdown on the first page go to negative days/hours/mins/secs?', 'The exact ETH block that the FSA occurs isn\'t automatically retrieved, so it\'s something I need to do manually. I plan on automating this in a future update.'),
+(4, 'This website is confusing, how does everything work?', 'A full guide and explanation can be found at the <a href=\"https://google.com\" target=\"_blank\">Reddit thread</a>'),
+(5, 'Why doesn\'t the \"show math\" button on the Calculators page doesn\'t do anything?', 'That feature isn\'t completed yet.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feedback_ip`
+--
+
+CREATE TABLE `feedback_ip` (
+  `id` int(11) NOT NULL,
+  `ip` varchar(15) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `feedback_ip`
+--
+
+INSERT INTO `feedback_ip` (`id`, `ip`, `date`) VALUES
+(6, '12.181.50.5', '2018-06-21 17:05:34'),
+(7, '107.77.229.215', '2018-06-22 18:56:45');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `next_eth_block`
 --
 
 CREATE TABLE `next_eth_block` (
   `id` int(11) NOT NULL,
   `date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `next_eth_block`
 --
 
 INSERT INTO `next_eth_block` (`id`, `date`) VALUES
-(1, '2018-06-18 01:00:00');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__bookmark`
---
-
-CREATE TABLE `pma__bookmark` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `dbase` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `user` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `label` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `query` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Bookmarks';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__central_columns`
---
-
-CREATE TABLE `pma__central_columns` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `col_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `col_type` varchar(64) COLLATE utf8_bin NOT NULL,
-  `col_length` text COLLATE utf8_bin,
-  `col_collation` varchar(64) COLLATE utf8_bin NOT NULL,
-  `col_isNull` tinyint(1) NOT NULL,
-  `col_extra` varchar(255) COLLATE utf8_bin DEFAULT '',
-  `col_default` text COLLATE utf8_bin
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Central list of columns';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__column_info`
---
-
-CREATE TABLE `pma__column_info` (
-  `id` int(5) UNSIGNED NOT NULL,
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `column_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `mimetype` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `transformation` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `transformation_options` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `input_transformation` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `input_transformation_options` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Column information for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__designer_settings`
---
-
-CREATE TABLE `pma__designer_settings` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `settings_data` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Settings related to Designer';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__export_templates`
---
-
-CREATE TABLE `pma__export_templates` (
-  `id` int(5) UNSIGNED NOT NULL,
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `export_type` varchar(10) COLLATE utf8_bin NOT NULL,
-  `template_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `template_data` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Saved export templates';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__favorite`
---
-
-CREATE TABLE `pma__favorite` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `tables` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Favorite tables';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__history`
---
-
-CREATE TABLE `pma__history` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `username` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `timevalue` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `sqlquery` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='SQL history for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__navigationhiding`
---
-
-CREATE TABLE `pma__navigationhiding` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `item_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `item_type` varchar(64) COLLATE utf8_bin NOT NULL,
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Hidden items of navigation tree';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__pdf_pages`
---
-
-CREATE TABLE `pma__pdf_pages` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `page_nr` int(10) UNSIGNED NOT NULL,
-  `page_descr` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='PDF relation pages for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__recent`
---
-
-CREATE TABLE `pma__recent` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `tables` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Recently accessed tables';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__relation`
---
-
-CREATE TABLE `pma__relation` (
-  `master_db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `master_table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `master_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `foreign_db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `foreign_table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `foreign_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Relation table';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__savedsearches`
---
-
-CREATE TABLE `pma__savedsearches` (
-  `id` int(5) UNSIGNED NOT NULL,
-  `username` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `search_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `search_data` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Saved searches';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__table_coords`
---
-
-CREATE TABLE `pma__table_coords` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `pdf_page_number` int(11) NOT NULL DEFAULT '0',
-  `x` float UNSIGNED NOT NULL DEFAULT '0',
-  `y` float UNSIGNED NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table coordinates for phpMyAdmin PDF output';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__table_info`
---
-
-CREATE TABLE `pma__table_info` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `display_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table information for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__table_uiprefs`
---
-
-CREATE TABLE `pma__table_uiprefs` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `prefs` text COLLATE utf8_bin NOT NULL,
-  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Tables'' UI preferences';
-
---
--- Dumping data for table `pma__table_uiprefs`
---
-
-INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
-('root', 'coss', 'volume', '{\"sorted_col\":\"`volume`.`id`  DESC\"}', '2018-06-17 17:07:05');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__tracking`
---
-
-CREATE TABLE `pma__tracking` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `version` int(10) UNSIGNED NOT NULL,
-  `date_created` datetime NOT NULL,
-  `date_updated` datetime NOT NULL,
-  `schema_snapshot` text COLLATE utf8_bin NOT NULL,
-  `schema_sql` text COLLATE utf8_bin,
-  `data_sql` longtext COLLATE utf8_bin,
-  `tracking` set('UPDATE','REPLACE','INSERT','DELETE','TRUNCATE','CREATE DATABASE','ALTER DATABASE','DROP DATABASE','CREATE TABLE','ALTER TABLE','RENAME TABLE','DROP TABLE','CREATE INDEX','DROP INDEX','CREATE VIEW','ALTER VIEW','DROP VIEW') COLLATE utf8_bin DEFAULT NULL,
-  `tracking_active` int(1) UNSIGNED NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Database changes tracking for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__userconfig`
---
-
-CREATE TABLE `pma__userconfig` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `timevalue` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `config_data` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='User preferences storage for phpMyAdmin';
-
---
--- Dumping data for table `pma__userconfig`
---
-
-INSERT INTO `pma__userconfig` (`username`, `timevalue`, `config_data`) VALUES
-('root', '2018-06-17 22:29:22', '{\"Console\\/Mode\":\"collapse\"}');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__usergroups`
---
-
-CREATE TABLE `pma__usergroups` (
-  `usergroup` varchar(64) COLLATE utf8_bin NOT NULL,
-  `tab` varchar(64) COLLATE utf8_bin NOT NULL,
-  `allowed` enum('Y','N') COLLATE utf8_bin NOT NULL DEFAULT 'N'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='User groups with configured menu items';
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pma__users`
---
-
-CREATE TABLE `pma__users` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `usergroup` varchar(64) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Users and their assignments to user groups';
+(1, '2018-06-25 08:00:00');
 
 -- --------------------------------------------------------
 
@@ -335,71 +143,71 @@ CREATE TABLE `value` (
 --
 
 INSERT INTO `value` (`id`, `name`, `symbol_cmc`, `symbol_coss`, `value`, `fee`) VALUES
-(1, 'Aditus', 'ADI', 'ADI', '0.01732', '1'),
-(2, 'Ark', 'ARK', 'ARK', '1.57131', '0'),
-(3, 'Bitcoin Cash', 'BCH', 'BCH', '881.802', '0'),
-(4, 'Bluzelle', 'BLZ', 'BLZ', '0.296864', '1'),
-(5, 'Bancor', 'BNT', 'BNT', '3.41746', '1'),
-(6, 'Blockpool', 'BPL', 'BPL', '0.0823731', 'DISABLED'),
-(7, 'Bitcoin', 'BTC', 'BTC', '6723.74', '0'),
+(1, 'Aditus', 'ADI', 'ADI', '0.0182694', '1'),
+(2, 'Ark', 'ARK', 'ARK', '1.27391', '0'),
+(3, 'Bitcoin Cash', 'BCH', 'BCH', '703.954', '0'),
+(4, 'Bluzelle', 'BLZ', 'BLZ', '0.227609', '1'),
+(5, 'Bancor', 'BNT', 'BNT', '2.84892', '1'),
+(6, 'Blockpool', 'BPL', 'BPL', '0.0774909', 'DISABLED'),
+(7, 'Bitcoin', 'BTC', 'BTC', '6115.08', '0'),
 (8, '', 'BWT', 'BWT', NULL, '1'),
-(9, 'CanYaCoin', 'CAN', 'CAN', '0.122942', '1'),
-(10, 'COSS', 'COSS', 'COSS', '0.145142', '1'),
-(11, 'Verify', 'CRED', 'CRED-VERIFY', '0.118802', '0'),
-(12, 'Credits', 'CS', 'CREDITS', '0.333463', '0'),
-(13, 'Civic', 'CVC', 'CVC', '0.202647', '1'),
-(14, 'Dash', 'DASH', 'DASH', '268.646', '0'),
-(15, 'Datum', 'DAT', 'DAT', '0.0175236', '1'),
-(16, 'Enjin Coin', 'ENJ', 'ENJ', '0.0725545', '1'),
-(17, 'EOS', 'EOS', 'EOS', '10.5695', '1'),
-(18, 'Ethereum', 'ETH', 'ETH', '516.312', 'ETH'),
-(19, 'FidentiaX', 'FDX', 'FDX', '0.0326132', '1'),
-(20, 'Fitrova', 'FRV', 'FRV', '0.0000741459', '1'),
-(21, 'FuzeX', 'FXT', 'FXT', '0.0321424', '1'),
-(22, 'FundYourselfNow', 'FYN', 'FYN', '0.738172', '1'),
-(23, 'Gatcoin', 'GAT', 'GAT', '0.00465741', '1'),
+(9, 'CanYaCoin', 'CAN', 'CAN', '0.112913', '1'),
+(10, 'COSS', 'COSS', 'COSS', '0.115621', '1'),
+(11, 'Verify', 'CRED', 'CRED', '0.068845', '0'),
+(12, 'Credits', 'CS', 'CS', '0.284698', '0'),
+(13, 'Civic', 'CVC', 'CVC', '0.174455', '1'),
+(14, 'Dash', 'DASH', 'DASH', '222.343', '0'),
+(15, 'Datum', 'DAT', 'DAT', '0.0172447', '1'),
+(16, 'Enjin Coin', 'ENJ', 'ENJ', '0.0536161', '1'),
+(17, 'EOS', 'EOS', 'EOS', '7.89043', '1'),
+(18, 'Ethereum', 'ETH', 'ETH', '437.708', 'ETH'),
+(19, 'FidentiaX', 'FDX', 'FDX', '0.0256556', '1'),
+(20, 'Fitrova', 'FRV', 'FRV', '0.0000269399', '1'),
+(21, 'FuzeX', 'FXT', 'FXT', '0.0295401', '1'),
+(22, 'FundYourselfNow', 'FYN', 'FYN', '0.665791', '1'),
+(23, 'Gatcoin', 'GAT', 'GAT', '0.00416403', '1'),
 (24, '', 'H2O', 'H2O', NULL, '1'),
-(25, 'HelloGold', 'HGT', 'HGT', '0.0108565', '1'),
-(26, 'ICON', 'ICX', 'ICX', '2.06716', '1'),
-(27, 'Indorse Token', 'IND', 'IND', '0.0570487', '1'),
-(28, 'Intelligent Trading Foundation', 'ITT', 'ITT', '0.0358476', '1'),
-(29, 'Jetcoin', 'JET', 'JET', '0.0593265', '1'),
-(30, 'Kin', 'KIN', 'KIN', '0.000152063', '1'),
-(31, 'Kyber Network', 'KNC', 'KNC', '1.01111', '1'),
+(25, 'HelloGold', 'HGT', 'HGT', '0.00875044', '1'),
+(26, 'ICON', 'ICX', 'ICX', '1.51697', '1'),
+(27, 'Indorse Token', 'IND', 'IND', '0.0606994', '1'),
+(28, 'Intelligent Trading Foundation', 'ITT', 'ITT', '0.0462197', '1'),
+(29, 'Jetcoin', 'JET', 'JET', '0.0632364', '1'),
+(30, 'Kin', 'KIN', 'KIN', '0.000141135', '1'),
+(31, 'Kyber Network', 'KNC', 'KNC', '0.823715', '1'),
 (32, '', 'LA', 'LA', NULL, '1'),
-(33, 'LALA World', 'LALA', 'LALA', '0.0339583', '1'),
+(33, 'LALA World', 'LALA', 'LALA', '0.0246024', '1'),
 (34, '', 'LAN', 'LAN', NULL, '1'),
-(35, 'ChainLink', 'LINK', 'LINK', '0.209103', '1'),
-(36, 'Lisk', 'LSK', 'LSK', '6.40025', '0'),
-(37, 'Litecoin', 'LTC', 'LTC', '97.8452', '0'),
-(38, 'MARK.SPACE', 'MRK', 'MRK', '0.0359946', '1'),
-(39, 'Nitro', 'NOX', 'NOX', '0.160383', '1'),
-(40, 'OmiseGO', 'OMG', 'OMG', '9.33463', '1'),
-(41, 'TenX', 'PAY', 'PAY', '0.620504', '1'),
+(35, 'ChainLink', 'LINK', 'LINK', '0.174652', '1'),
+(36, 'Lisk', 'LSK', 'LSK', '5.28751', '0'),
+(37, 'Litecoin', 'LTC', 'LTC', '80.4195', '0'),
+(38, 'MARK.SPACE', 'MRK', 'MRK', '0.0269706', '1'),
+(39, 'Nitro', 'NOX', 'NOX', '0.0757727', '1'),
+(40, 'OmiseGO', 'OMG', 'OMG', '7.25311', '1'),
+(41, 'TenX', 'PAY', 'PAY', '0.487703', '1'),
 (42, '', 'PGT', 'PGT', NULL, '1'),
-(43, 'Lampix', 'PIX', 'PIX', '0.0169505', '1'),
-(44, 'Po.et', 'POE', 'POE', '0.0177777', '1'),
-(45, 'Privatix', 'PRIX', 'PRIX', '3.7135', '1'),
-(46, 'Request Network', 'REQ', 'REQ', '0.104627', '1'),
-(47, 'Sentinel Chain', 'SENC', 'SENC', '0.0479305', '1'),
+(43, 'Lampix', 'PIX', 'PIX', '0.012552', '1'),
+(44, 'Po.et', 'POE', 'POE', '0.013216', '1'),
+(45, 'Privatix', 'PRIX', 'PRIX', '3.09892', '1'),
+(46, 'Request Network', 'REQ', 'REQ', '0.0711789', '1'),
+(47, 'Sentinel Chain', 'SENC', 'SENC', '0.0301416', '1'),
 (48, '', 'SMDX', 'SMDX', NULL, '1'),
-(49, 'SONM', 'SNM', 'SNM', '0.197226', '1'),
-(50, 'Stox', 'STX', 'STX', '0.260823', '1'),
-(51, 'Substratum', 'SUB', 'SUB', '0.278298', '1'),
+(49, 'SONM', 'SNM', 'SNM', '0.169261', '1'),
+(50, 'Stox', 'STX', 'STX', '0.189406', '1'),
+(51, 'Substratum', 'SUB', 'SUB', '0.194928', '1'),
 (52, '', 'TEU', 'TEU', NULL, '1'),
-(53, 'Tigereum', 'TIG', 'TIG', '0.0599552', '1'),
-(54, 'TrakInvest', 'TRAK', 'TRAK', '0.0175388', '1'),
-(55, 'Upfiring', 'UFR', 'UFR', '0.170601', '0'),
+(53, 'Tigereum', 'TIG', 'TIG', '0.0385623', '1'),
+(54, 'TrakInvest', 'TRAK', 'TRAK', '0.0170186', '1'),
+(55, 'Upfiring', 'UFR', 'UFR', '0.119318', '0'),
 (56, 'United States Dollar', 'USD', 'USD', NULL, '0'),
-(57, 'VeChain', 'VEN', 'VEN', '3.15641', '1'),
-(58, 'Vezt', 'VZT', 'VZT', '0.0402206', '1'),
-(59, 'Waves', 'WAVES', 'WAVES', '3.68621', '0'),
-(60, 'MyWish', 'WISH', 'WISH', '0.137729', '1'),
-(61, 'Waltonchain', 'WTC', 'WTC', '8.66169', '1'),
-(62, 'XinFin Network', 'XDCE', 'XDCE', '0.00480801', '1'),
-(63, 'NEM', 'XEM', 'XEM', '0.195757', '0'),
-(64, 'Ink Protocol', 'XNK', 'XNK', '0.0305441', '0'),
-(65, 'ZenCash', 'ZEN', 'ZEN', '19.614', 'DISABLED');
+(57, 'VeChain', 'VEN', 'VEN', '2.56699', '1'),
+(58, 'Vezt', 'VZT', 'VZT', '0.039996', '1'),
+(59, 'Waves', 'WAVES', 'WAVES', '2.68267', '0'),
+(60, 'MyWish', 'WISH', 'WISH', '0.0967068', '1'),
+(61, 'Waltonchain', 'WTC', 'WTC', '6.01495', '1'),
+(62, 'XinFin Network', 'XDCE', 'XDCE', '0.00398262', '1'),
+(63, 'NEM', 'XEM', 'XEM', '0.150521', '0'),
+(64, 'Ink Protocol', 'XNK', 'XNK', '0.0214188', '0'),
+(65, 'ZenCash', 'ZEN', 'ZEN', '17.3093', 'DISABLED');
 
 -- --------------------------------------------------------
 
@@ -418,102 +226,6 @@ CREATE TABLE `volume` (
 --
 
 INSERT INTO `volume` (`id`, `date`, `volume`) VALUES
-(1, '2018-06-11 23:00:00', 1190000),
-(2, '2018-06-12 23:00:00', 1530000),
-(3, '2018-06-13 23:00:00', 1330000),
-(4, '2018-06-14 00:00:00', 978654),
-(5, '2018-06-14 04:00:00', 1048520),
-(6, '2018-06-14 05:00:00', 994460),
-(8, '2018-06-14 06:00:00', 917210),
-(10, '2018-06-14 07:00:00', 925169),
-(12, '2018-06-14 08:00:00', 932480),
-(14, '2018-06-14 09:00:00', 1014527),
-(16, '2018-06-14 10:00:00', 979453),
-(18, '2018-06-14 11:00:00', 932386),
-(20, '2018-06-14 12:00:00', 1092398),
-(22, '2018-06-14 13:00:00', 1019819),
-(23, '2018-06-14 14:00:00', 1041028),
-(25, '2018-06-14 15:00:00', 1109777),
-(27, '2018-06-14 16:00:00', 1017597),
-(29, '2018-06-14 17:00:00', 1093247),
-(31, '2018-06-14 18:00:00', 1147083),
-(33, '2018-06-14 19:00:00', 1180805),
-(35, '2018-06-14 20:00:00', 1232766),
-(37, '2018-06-14 21:00:00', 1235480),
-(39, '2018-06-14 22:00:00', 1232383),
-(41, '2018-06-14 23:00:00', 1228964),
-(43, '2018-06-15 00:00:00', 1158071),
-(45, '2018-06-15 01:00:00', 1108940),
-(47, '2018-06-15 02:00:00', 1115099),
-(49, '2018-06-15 03:00:00', 1086512),
-(51, '2018-06-15 04:00:00', 1008285),
-(53, '2018-06-15 05:00:00', 966306),
-(55, '2018-06-15 06:00:00', 943985),
-(57, '2018-06-15 07:00:00', 940086),
-(59, '2018-06-15 08:00:00', 963150),
-(61, '2018-06-15 09:00:00', 968460),
-(63, '2018-06-15 10:00:00', 876118),
-(65, '2018-06-15 11:00:00', 906969),
-(67, '2018-06-15 12:00:00', 1025749),
-(69, '2018-06-15 13:00:00', 1011294),
-(71, '2018-06-15 14:00:00', 1116364),
-(73, '2018-06-15 15:00:00', 1085892),
-(75, '2018-06-15 16:00:00', 1030626),
-(77, '2018-06-15 17:00:00', 1060195),
-(79, '2018-06-15 18:00:00', 1018719),
-(81, '2018-06-15 19:00:00', 919393),
-(83, '2018-06-15 20:00:00', 891014),
-(85, '2018-06-15 21:00:00', 856166),
-(87, '2018-06-15 22:00:00', 859578),
-(89, '2018-06-15 23:00:00', 870205),
-(91, '2018-06-16 00:00:00', 985242),
-(93, '2018-06-16 01:00:00', 977136),
-(94, '2018-06-16 02:00:00', 900557),
-(96, '2018-06-16 03:00:00', 901278),
-(98, '2018-06-16 04:00:00', 903205),
-(100, '2018-06-16 05:00:00', 927162),
-(102, '2018-06-16 06:00:00', 948456),
-(104, '2018-06-16 07:00:00', 985754),
-(106, '2018-06-16 08:00:00', 1219604),
-(108, '2018-06-16 09:00:00', 1624024),
-(110, '2018-06-16 10:00:00', 1700255),
-(112, '2018-06-16 11:00:00', 1686680),
-(114, '2018-06-16 12:00:00', 1662022),
-(116, '2018-06-16 13:00:00', 1465334),
-(118, '2018-06-16 14:00:00', 1589731),
-(120, '2018-06-16 15:00:00', 1547569),
-(122, '2018-06-16 16:00:00', 1508377),
-(124, '2018-06-16 17:00:00', 1591974),
-(126, '2018-06-16 18:00:00', 1577995),
-(128, '2018-06-16 19:00:00', 1556851),
-(130, '2018-06-16 20:00:00', 1526098),
-(131, '2018-06-16 21:00:00', 1594064),
-(133, '2018-06-16 22:00:00', 1605620),
-(135, '2018-06-16 23:00:00', 1611981),
-(137, '2018-06-17 00:00:00', 1565902),
-(139, '2018-06-17 01:00:00', 1494858),
-(141, '2018-06-17 02:00:00', 1471408),
-(143, '2018-06-17 03:00:00', 1477715),
-(145, '2018-06-17 04:00:00', 1482079),
-(147, '2018-06-17 05:00:00', 1486105),
-(149, '2018-06-17 06:00:00', 1507066),
-(150, '2018-06-17 07:00:00', 1735181),
-(152, '2018-06-17 08:00:00', 1687252),
-(154, '2018-06-17 09:00:00', 1344528),
-(156, '2018-06-17 10:00:00', 1331006),
-(158, '2018-06-17 11:00:00', 1326549),
-(160, '2018-06-17 12:00:00', 1256062),
-(162, '2018-06-17 13:00:00', 1274794),
-(164, '2018-06-17 14:00:00', 1325020),
-(166, '2018-06-17 15:00:00', 1253784),
-(168, '2018-06-17 16:00:00', 1264228),
-(170, '2018-06-17 17:00:00', 1509119),
-(172, '2018-06-17 18:00:00', 1549880),
-(174, '2018-06-17 19:00:00', 1613118),
-(176, '2018-06-17 20:00:00', 1514457),
-(178, '2018-06-17 21:00:00', 1459120),
-(180, '2018-06-17 22:00:00', 1424552),
-(182, '2018-06-17 23:00:00', 1393436),
 (184, '2018-06-18 00:00:00', 1377138),
 (186, '2018-06-18 01:00:00', 1418065),
 (188, '2018-06-18 02:00:00', 1392611),
@@ -538,11 +250,132 @@ INSERT INTO `volume` (`id`, `date`, `volume`) VALUES
 (226, '2018-06-18 21:00:00', 1256888),
 (228, '2018-06-18 22:00:00', 1285490),
 (230, '2018-06-18 23:00:00', 1286156),
-(232, '2018-06-19 00:00:00', 1285005),
-(234, '2018-06-19 01:00:00', 1415715),
-(236, '2018-06-19 02:00:00', 1388164),
-(238, '2018-06-19 03:00:00', 1349495),
-(240, '2018-06-19 04:00:00', 1354270);
+(231, '2018-06-20 00:00:00', 1300000),
+(232, '2018-06-20 01:00:00', 1500000),
+(233, '2018-06-20 02:00:00', 1700000),
+(242, '2018-06-20 03:00:00', 1996513),
+(244, '2018-06-20 04:00:00', 2044210),
+(246, '2018-06-20 05:00:00', 2001845),
+(248, '2018-06-20 06:00:00', 2025511),
+(250, '2018-06-20 07:00:00', 1981846),
+(254, '2018-06-20 08:00:00', 2045237),
+(258, '2018-06-20 09:00:00', 1733047),
+(262, '2018-06-20 10:00:00', 1645177),
+(266, '2018-06-20 11:00:00', 1418182),
+(270, '2018-06-20 12:00:00', 1144214),
+(274, '2018-06-20 13:00:00', 971451),
+(278, '2018-06-20 14:00:00', 995162),
+(282, '2018-06-20 15:00:00', 1103442),
+(286, '2018-06-20 16:00:00', 1245782),
+(290, '2018-06-20 17:00:00', 1331164),
+(294, '2018-06-20 18:00:00', 1249199),
+(298, '2018-06-20 19:00:00', 1193351),
+(302, '2018-06-20 20:00:00', 1229078),
+(306, '2018-06-20 21:00:00', 1515483),
+(310, '2018-06-20 22:00:00', 1545857),
+(314, '2018-06-20 23:00:00', 1482190),
+(318, '2018-06-21 00:00:00', 1508704),
+(322, '2018-06-21 01:00:00', 1605677),
+(324, '2018-06-21 02:00:00', 1592322),
+(326, '2018-06-21 03:00:00', 1566352),
+(328, '2018-06-21 04:00:00', 1624124),
+(330, '2018-06-21 05:00:00', 1583084),
+(332, '2018-06-21 06:00:00', 1560706),
+(334, '2018-06-21 07:00:00', 1582379),
+(336, '2018-06-21 08:00:00', 1678290),
+(338, '2018-06-21 09:00:00', 1542077),
+(340, '2018-06-21 10:00:00', 1520473),
+(342, '2018-06-21 11:00:00', 1468845),
+(344, '2018-06-21 12:00:00', 1507367),
+(346, '2018-06-21 13:00:00', 1458691),
+(348, '2018-06-21 14:00:00', 1611836),
+(350, '2018-06-21 15:00:00', 1707069),
+(352, '2018-06-21 16:00:00', 1622038),
+(354, '2018-06-21 17:00:00', 1544674),
+(356, '2018-06-21 18:00:00', 1571588),
+(358, '2018-06-21 19:00:00', 1661307),
+(360, '2018-06-21 20:00:00', 1620542),
+(362, '2018-06-21 21:00:00', 1856373),
+(364, '2018-06-21 22:00:00', 1723820),
+(366, '2018-06-21 23:00:00', 1641205),
+(368, '2018-06-22 00:00:00', 1690107),
+(370, '2018-06-22 01:00:00', 1680512),
+(372, '2018-06-22 02:00:00', 1606951),
+(374, '2018-06-22 03:00:00', 1612481),
+(376, '2018-06-22 04:00:00', 1624113),
+(378, '2018-06-22 05:00:00', 1577282),
+(380, '2018-06-22 06:00:00', 1582373),
+(382, '2018-06-22 07:00:00', 1591568),
+(384, '2018-06-22 08:00:00', 1515582),
+(386, '2018-06-22 09:00:00', 1496092),
+(388, '2018-06-22 10:00:00', 1543673),
+(390, '2018-06-22 11:00:00', 1607233),
+(392, '2018-06-22 12:00:00', 1604258),
+(394, '2018-06-22 13:00:00', 1733055),
+(396, '2018-06-22 14:00:00', 1688044),
+(398, '2018-06-22 15:00:00', 1685996),
+(400, '2018-06-22 16:00:00', 1550644),
+(402, '2018-06-22 17:00:00', 1518544),
+(404, '2018-06-22 18:00:00', 1608433),
+(406, '2018-06-22 19:00:00', 1525379),
+(408, '2018-06-22 20:00:00', 1411906),
+(410, '2018-06-22 21:00:00', 1296567),
+(412, '2018-06-22 22:00:00', 1159765),
+(414, '2018-06-22 23:00:00', 1133802),
+(416, '2018-06-23 00:00:00', 1129087),
+(418, '2018-06-23 01:00:00', 1139047),
+(420, '2018-06-23 02:00:00', 1118528),
+(422, '2018-06-23 03:00:00', 1109734),
+(424, '2018-06-23 04:00:00', 1091295),
+(426, '2018-06-23 05:00:00', 1092563),
+(428, '2018-06-23 06:00:00', 1142385),
+(430, '2018-06-23 07:00:00', 1094709),
+(432, '2018-06-23 08:00:00', 1079106),
+(434, '2018-06-23 09:00:00', 1134918),
+(436, '2018-06-23 10:00:00', 1082760),
+(438, '2018-06-23 11:00:00', 1174233),
+(440, '2018-06-23 12:00:00', 1115498),
+(442, '2018-06-23 13:00:00', 1261033),
+(444, '2018-06-23 14:00:00', 1257892),
+(446, '2018-06-23 15:00:00', 1282226),
+(448, '2018-06-23 16:00:00', 1210964),
+(450, '2018-06-23 17:00:00', 1180749),
+(452, '2018-06-23 18:00:00', 1183207),
+(454, '2018-06-23 19:00:00', 1054677),
+(456, '2018-06-23 20:00:00', 1100751),
+(458, '2018-06-23 21:00:00', 1057178),
+(460, '2018-06-23 22:00:00', 1091657),
+(462, '2018-06-23 23:00:00', 1120299),
+(464, '2018-06-24 00:00:00', 1116363),
+(466, '2018-06-24 01:00:00', 1098987),
+(468, '2018-06-24 02:00:00', 1095348),
+(470, '2018-06-24 03:00:00', 1127983),
+(472, '2018-06-24 04:00:00', 1120382),
+(474, '2018-06-24 05:00:00', 1094406),
+(476, '2018-06-24 06:00:00', 1074837),
+(478, '2018-06-24 07:00:00', 1032196),
+(480, '2018-06-24 22:00:00', 1178652),
+(482, '2018-06-24 23:00:00', 1210817),
+(484, '2018-06-25 00:00:00', 1266811),
+(486, '2018-06-25 01:00:00', 1305463),
+(488, '2018-06-25 02:00:00', 1353649),
+(490, '2018-06-25 03:00:00', 1354666),
+(492, '2018-06-25 04:00:00', 1396674),
+(494, '2018-06-25 05:00:00', 1491089),
+(496, '2018-06-25 06:00:00', 1522424),
+(498, '2018-06-25 07:00:00', 1515018),
+(500, '2018-06-25 08:00:00', 1478389),
+(502, '2018-06-25 09:00:00', 1399576),
+(504, '2018-06-25 10:00:00', 1441759),
+(506, '2018-06-25 11:00:00', 1449901),
+(508, '2018-06-25 12:00:00', 1582548),
+(510, '2018-06-25 13:00:00', 1815321),
+(512, '2018-06-25 14:00:00', 2080852),
+(514, '2018-06-25 18:00:00', 2714876),
+(516, '2018-06-25 19:00:00', 2729746),
+(518, '2018-06-25 20:00:00', 2979881),
+(522, '2018-06-25 15:00:00', 3430274),
+(524, '2018-06-25 16:00:00', 3379130);
 
 -- --------------------------------------------------------
 
@@ -564,138 +397,39 @@ CREATE TABLE `weekly_rewards` (
 --
 
 INSERT INTO `weekly_rewards` (`id`, `eth_block`, `date`, `volume`, `value`, `Fee`) VALUES
-(1, '5729716', '2018-06-04 01:00:00', 1600000, '0.000096634311', ''),
-(2, '5769166', '2018-06-11 16:00:00', 2558000, '0.000096634311', '');
+(1, '5729716', '2018-06-04 08:00:00', 1600000, '0.000096634311', ''),
+(2, '5769166', '2018-06-11 08:00:00', 2558000, '0.000096634311', ''),
+(3, '5809771', '2018-06-18 08:00:00', 1290000, '0.000096634311', ''),
+(4, '5850709', '2018-06-25 08:00:00', 1418000, '', '');
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `access_log`
+--
+ALTER TABLE `access_log`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `faq`
+--
+ALTER TABLE `faq`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `feedback_ip`
+--
+ALTER TABLE `feedback_ip`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `ip` (`ip`);
+
+--
 -- Indexes for table `next_eth_block`
 --
 ALTER TABLE `next_eth_block`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `pma__bookmark`
---
-ALTER TABLE `pma__bookmark`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `pma__central_columns`
---
-ALTER TABLE `pma__central_columns`
-  ADD PRIMARY KEY (`db_name`,`col_name`);
-
---
--- Indexes for table `pma__column_info`
---
-ALTER TABLE `pma__column_info`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `db_name` (`db_name`,`table_name`,`column_name`);
-
---
--- Indexes for table `pma__designer_settings`
---
-ALTER TABLE `pma__designer_settings`
-  ADD PRIMARY KEY (`username`);
-
---
--- Indexes for table `pma__export_templates`
---
-ALTER TABLE `pma__export_templates`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `u_user_type_template` (`username`,`export_type`,`template_name`);
-
---
--- Indexes for table `pma__favorite`
---
-ALTER TABLE `pma__favorite`
-  ADD PRIMARY KEY (`username`);
-
---
--- Indexes for table `pma__history`
---
-ALTER TABLE `pma__history`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `username` (`username`,`db`,`table`,`timevalue`);
-
---
--- Indexes for table `pma__navigationhiding`
---
-ALTER TABLE `pma__navigationhiding`
-  ADD PRIMARY KEY (`username`,`item_name`,`item_type`,`db_name`,`table_name`);
-
---
--- Indexes for table `pma__pdf_pages`
---
-ALTER TABLE `pma__pdf_pages`
-  ADD PRIMARY KEY (`page_nr`),
-  ADD KEY `db_name` (`db_name`);
-
---
--- Indexes for table `pma__recent`
---
-ALTER TABLE `pma__recent`
-  ADD PRIMARY KEY (`username`);
-
---
--- Indexes for table `pma__relation`
---
-ALTER TABLE `pma__relation`
-  ADD PRIMARY KEY (`master_db`,`master_table`,`master_field`),
-  ADD KEY `foreign_field` (`foreign_db`,`foreign_table`);
-
---
--- Indexes for table `pma__savedsearches`
---
-ALTER TABLE `pma__savedsearches`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `u_savedsearches_username_dbname` (`username`,`db_name`,`search_name`);
-
---
--- Indexes for table `pma__table_coords`
---
-ALTER TABLE `pma__table_coords`
-  ADD PRIMARY KEY (`db_name`,`table_name`,`pdf_page_number`);
-
---
--- Indexes for table `pma__table_info`
---
-ALTER TABLE `pma__table_info`
-  ADD PRIMARY KEY (`db_name`,`table_name`);
-
---
--- Indexes for table `pma__table_uiprefs`
---
-ALTER TABLE `pma__table_uiprefs`
-  ADD PRIMARY KEY (`username`,`db_name`,`table_name`);
-
---
--- Indexes for table `pma__tracking`
---
-ALTER TABLE `pma__tracking`
-  ADD PRIMARY KEY (`db_name`,`table_name`,`version`);
-
---
--- Indexes for table `pma__userconfig`
---
-ALTER TABLE `pma__userconfig`
-  ADD PRIMARY KEY (`username`);
-
---
--- Indexes for table `pma__usergroups`
---
-ALTER TABLE `pma__usergroups`
-  ADD PRIMARY KEY (`usergroup`,`tab`,`allowed`);
-
---
--- Indexes for table `pma__users`
---
-ALTER TABLE `pma__users`
-  ADD PRIMARY KEY (`username`,`usergroup`);
 
 --
 -- Indexes for table `value`
@@ -721,46 +455,28 @@ ALTER TABLE `weekly_rewards`
 --
 
 --
+-- AUTO_INCREMENT for table `access_log`
+--
+ALTER TABLE `access_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `faq`
+--
+ALTER TABLE `faq`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `feedback_ip`
+--
+ALTER TABLE `feedback_ip`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `next_eth_block`
 --
 ALTER TABLE `next_eth_block`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `pma__bookmark`
---
-ALTER TABLE `pma__bookmark`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `pma__column_info`
---
-ALTER TABLE `pma__column_info`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `pma__export_templates`
---
-ALTER TABLE `pma__export_templates`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `pma__history`
---
-ALTER TABLE `pma__history`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `pma__pdf_pages`
---
-ALTER TABLE `pma__pdf_pages`
-  MODIFY `page_nr` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `pma__savedsearches`
---
-ALTER TABLE `pma__savedsearches`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `value`
@@ -772,13 +488,13 @@ ALTER TABLE `value`
 -- AUTO_INCREMENT for table `volume`
 --
 ALTER TABLE `volume`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=242;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=525;
 
 --
 -- AUTO_INCREMENT for table `weekly_rewards`
 --
 ALTER TABLE `weekly_rewards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
