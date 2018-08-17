@@ -100,11 +100,13 @@ function UpdateCrypto(){
 ////////////////////
 function UpdateVolume(){
   // Check if I'm on the hour (minute == 0)
-  if(moment().minute() == 0){
+  // if(moment().minute() == 0){
+  if(true){
     var url = "https://coinmarketcap.com/exchanges/coss/";
 
     request(url, function(err, res, html){
       if(err){
+        log.Write(err, true);
         return;
       }
 
@@ -121,8 +123,10 @@ function UpdateVolume(){
 
       var sql  = "INSERT INTO volume (date, volume) VALUES (?, ?)";
       var args = [date, volume];
+
       db.query(sql, args, function(err, rows){
-        return;
+        if(err)
+          log.Write(err, true);
       });
     });
   }
@@ -131,4 +135,4 @@ function UpdateVolume(){
 // Rate Limit: No more than 30/minute
 // Safe Limit: Once every five seconds
 var timerUpdateCrypto = setInterval(UpdateCrypto, 5000);
-var timerUpdateVolume = setInterval(UpdateVolume, 30000);
+var timerUpdateVolume = setInterval(UpdateVolume, 3000);
