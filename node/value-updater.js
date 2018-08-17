@@ -100,8 +100,7 @@ function UpdateCrypto(){
 ////////////////////
 function UpdateVolume(){
   // Check if I'm on the hour (minute == 0)
-  // if(moment().minute() == 0){
-  if(true){
+  if(moment().minute() == 0){
     var url = "https://coinmarketcap.com/exchanges/coss/";
 
     request(url, function(err, res, html){
